@@ -95,7 +95,7 @@ export default function NavBar() {
               className="ml-4 border border-tactical-red px-4 py-2 font-mono text-xs uppercase tracking-tactical text-tactical-red transition-colors hover:bg-tactical-redDim"
               aria-label="Book a discovery call"
             >
-              BOOK CALL
+              GET IN TOUCH
             </a>
           </nav>
 
@@ -151,7 +151,7 @@ export default function NavBar() {
               }}
               className="mt-4 border border-tactical-red px-8 py-3 font-mono text-sm uppercase tracking-tactical text-tactical-red transition-colors hover:bg-tactical-redDim"
             >
-              BOOK CALL
+              GET IN TOUCH
             </a>
           </nav>
         </div>

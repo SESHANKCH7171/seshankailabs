@@ -7,25 +7,24 @@ export default function About() {
       {/* Left column — text */}
       <div>
         <p className="font-mono text-xs uppercase tracking-tactical text-tactical-red">
-          WHY THIS EXISTS
+          THE ARCHITECTURAL MOAT
         </p>
         <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-tight text-white sm:text-5xl">
-          Domain depth is the only moat.
+          In production AI, models are commodities. Backend architecture is the moat.
         </h2>
 
         <div className="mt-8 max-w-2xl space-y-6 text-base leading-8 text-industrial-silver">
           <p>
-            India&apos;s Tier-2 defense manufacturers — the machining shops, sensor
-            assemblers, and composite fabricators in Satpur, Ambad, and Igatpuri —
-            are operationally capable but administratively overwhelmed. They lose
-            tenders not because of poor engineering, but because of documentation
-            lag and compliance complexity.
+            Most teams hit a wall when transitioning generative AI from demo to
+            production: prompt injections, unbounded latency, soaring inference costs,
+            and catastrophic schema drift. A frontend prompt wrapper cannot survive
+            enterprise concurrency.
           </p>
           <p>
-            We built Seshank AI Labs to close that gap. Not with generic AI tools,
-            but with systems calibrated for the specific documents, standards, and
-            procurement workflows that govern Indian defense manufacturing —
-            AS9100, DGAQA, DRDO tenders, HAL subcontracting norms.
+            Seshank AI Labs builds deterministic, high-throughput agentic infrastructure.
+            We combine cyclic state machines (LangGraph), asynchronous streaming microservices
+            (FastAPI), low-latency semantic caching (Redis), and enterprise guardrails
+            (NeMo &amp; DeepEval) to build AI systems that never fail silently.
           </p>
         </div>
 
@@ -36,7 +35,7 @@ export default function About() {
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
                 Founder
               </span>
-              <span className="text-white">Seshank</span>
+              <span className="text-white">Seshank Chinnapotula</span>
             </div>
             <div className="flex gap-4">
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
@@ -46,22 +45,24 @@ export default function About() {
             </div>
             <div className="flex gap-4">
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
-                Domain
+                Role Focus
               </span>
-              <span className="text-white">Aerospace &amp; Defense AI Systems</span>
+              <span className="text-white">AI Agent Systems Architect</span>
             </div>
             <div className="flex gap-4">
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
-                Location
+                Core Stack
               </span>
-              <span className="text-white">Nashik, Maharashtra</span>
+              <span className="text-tactical-red">
+                LangGraph · FastAPI · Redis · NeMo · DeepEval
+              </span>
             </div>
             <div className="flex gap-4">
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
                 Status
               </span>
               <span className="text-ember-glow">
-                Actively building · Open to discovery conversations
+                Open to Founding Roles &amp; Contracts (UAE / KSA / UK)
               </span>
             </div>
           </div>

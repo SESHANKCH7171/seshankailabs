@@ -9,18 +9,18 @@ export default function ValueStack() {
     >
       {/* Section header */}
       <p className="font-mono text-xs uppercase tracking-tactical text-tactical-red">
-        CAPABILITIES
+        SYSTEM CAPABILITIES
       </p>
       <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-tight text-white sm:text-5xl">
-        Three systems. One mission.
+        Four Archetypes. Complete Production Coverage.
       </h2>
       <p className="mt-4 max-w-2xl text-base leading-8 text-industrial-silver">
-        We automate the three highest-friction points in defense supply chain
-        operations.
+        Production-grade agentic architectures engineered for FinTech underwriting,
+        autonomous fleet logistics, multilingual voice CX, and regulatory document intelligence.
       </p>
 
       {/* Cards */}
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {valueCards.map((card) => (
           <article
             key={card.id}

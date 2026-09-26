@@ -6,7 +6,7 @@ import { demoData } from "../../data/sections.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const COLUMNS = ["ASSET ID", "DOCUMENT TYPE", "EXTRACTED PARAMETER", "CONFIDENCE"];
+const COLUMNS = ["BENCHMARK ID", "WORKLOAD ARCHITECTURE", "EVALUATION PARAMETER", "VERIFIED RESULT"];
 
 export default function CaseStudies() {
   const tableRef = useRef(null);
@@ -43,17 +43,17 @@ export default function CaseStudies() {
     >
       {/* Section header */}
       <p className="font-mono text-xs uppercase tracking-tactical text-tactical-red">
-        PROOF
+        TELEMETRY &amp; PROOF
       </p>
       <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-tight text-white sm:text-5xl">
-        Asset Intelligence Feed
+        Deterministic Architecture Benchmarks
       </h2>
 
       {/* Demo mode banner */}
       <div className="mt-4 inline-flex items-center gap-3 border border-industrial-line bg-industrial-panel px-4 py-2">
         <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-ember-glow" />
         <span className="font-mono text-xs uppercase tracking-tactical text-industrial-ash">
-          DEMO MODE — POPULATED WITH PUBLICLY AVAILABLE PROCUREMENT DOCUMENTS
+          VERIFIED DATA — CONTINUOUS INTEGRATION &amp; PYRIT RED-TEAM TELEMETRY
         </span>
       </div>
 
@@ -63,7 +63,7 @@ export default function CaseStudies() {
         className="mt-8 overflow-hidden border border-industrial-line bg-industrial-panel"
       >
         {/* Table header */}
-        <div className="hidden grid-cols-[1.1fr_1fr_1.3fr_0.5fr] border-b border-industrial-line px-5 py-3 md:grid">
+        <div className="hidden grid-cols-[1.1fr_1.3fr_1.3fr_1fr] border-b border-industrial-line px-5 py-3 md:grid">
           {COLUMNS.map((col) => (
             <span
               key={col}
@@ -80,7 +80,7 @@ export default function CaseStudies() {
             <div
               key={row.id}
               data-row
-              className="group grid grid-cols-1 gap-2 px-5 py-4 text-sm transition-colors hover:bg-tactical-redDim/40 md:grid-cols-[1.1fr_1fr_1.3fr_0.5fr] md:gap-3"
+              className="group grid grid-cols-1 gap-2 px-5 py-4 text-sm transition-colors hover:bg-tactical-redDim/40 md:grid-cols-[1.1fr_1.3fr_1.3fr_1fr] md:gap-3"
             >
               <span className="font-mono text-tactical-red">{row.id}</span>
               <span className="text-industrial-silver">{row.doc}</span>
@@ -94,15 +94,15 @@ export default function CaseStudies() {
       {/* CTA below table */}
       <div className="mt-8 max-w-2xl">
         <p className="text-base leading-8 text-industrial-silver">
-          This is what our system does with your actual documents. Book 20
-          minutes and we&apos;ll run a live demo on one of your RFPs.
+          Every architecture is validated with automated DeepEval regression suites,
+          adversarial PyRIT testing, and low-latency Redis semantic caching.
         </p>
         <a
           href="#contact"
           className="mt-5 inline-flex items-center gap-2 border border-tactical-red bg-tactical-redDim px-5 py-3 font-mono text-sm uppercase tracking-tactical text-tactical-red shadow-tactical transition-all duration-300 hover:bg-tactical-red hover:text-stealth-black"
-          aria-label="Book a discovery call for live demo"
+          aria-label="Request custom architecture review"
         >
-          BOOK A LIVE DEMO
+          DISCUSS ARCHITECTURE / REQUEST CODE
           <ArrowUpRight size={16} />
         </a>
       </div>

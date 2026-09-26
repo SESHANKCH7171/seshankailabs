@@ -2,17 +2,20 @@ import { useState } from "react";
 import { Send, Mail } from "lucide-react";
 
 const BOTTLENECK_OPTIONS = [
-  "Tender / RFP Parsing Time",
-  "AS9100 / DGAQA Documentation",
-  "Supply Chain Visibility",
-  "Other — I'll explain in the call",
+  "Token Latency & Inference Costs",
+  "Agent Hallucination & Schema Drift",
+  "Security / Jailbreak & Prompt Injection Defense",
+  "Multi-Agent Orchestration & State Persistence",
+  "Founding AI Role / Remote Contractor Engagement",
+  "Other — Architectural Discussion",
 ];
 
 const REFERRAL_OPTIONS = [
-  "Cold Email",
+  "Direct Email / Outreach",
   "LinkedIn",
-  "Referral",
-  "Search / Other",
+  "X (Twitter)",
+  "GitHub / Open Source",
+  "Founder / Investor Network",
 ];
 
 const INITIAL_STATE = {
@@ -77,13 +80,13 @@ export default function Contact() {
 
       {/* Heading */}
       <h2 className="mt-5 font-display text-3xl font-semibold leading-tight text-white sm:text-5xl">
-        Ready to talk?
+        Initiate Architecture Inquiry
       </h2>
 
       {/* Sub-text */}
       <p className="mt-4 max-w-2xl text-base leading-8 text-industrial-silver">
-        20 minutes. No pitch deck. No jargon. Just a direct conversation about
-        the operational bottleneck costing you the most time right now.
+        Direct technical conversation with the systems architect. Zero sales fluff.
+        We&apos;ll evaluate your token latency, state graph architecture, or guardrail benchmarks.
       </p>
 
       {/* Fallback email */}
@@ -93,7 +96,7 @@ export default function Contact() {
         aria-label="Email seshank@seshankailabs.com"
       >
         <Mail size={15} />
-        Or email directly: seshank@seshankailabs.com
+        Direct: seshank@seshankailabs.com
       </a>
 
       {/* Form / Success state */}
@@ -244,7 +247,7 @@ export default function Contact() {
               className="focus-ring mt-2 inline-flex items-center justify-center gap-3 border border-tactical-red bg-tactical-red px-6 py-4 font-mono text-sm uppercase tracking-tactical text-stealth-black shadow-tactical transition-all duration-300 hover:bg-transparent hover:text-tactical-red disabled:cursor-not-allowed disabled:opacity-50"
               aria-label="Submit contact form"
             >
-              {sending ? "TRANSMITTING..." : "INITIATE CONTACT"}
+              {sending ? "TRANSMITTING..." : "INITIATE ARCHITECTURAL INQUIRY"}
               <Send size={17} />
             </button>
           </div>

@@ -34,7 +34,7 @@ export default function App() {
               © 2026 SESHANK AI LABS
             </span>
             <span className="font-mono text-xs tracking-tactical text-industrial-ash">
-              NASHIK · MAHARASHTRA · INDIA
+              AI AGENT SYSTEMS ARCHITECT · GCC &amp; UK CORRIDOR
             </span>
             <a
               href="mailto:seshank@seshankailabs.com"
