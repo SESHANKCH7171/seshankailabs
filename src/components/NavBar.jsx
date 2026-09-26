@@ -1,7 +1,38 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, RadioTower, ArrowLeft } from "lucide-react";
+import { Menu, X, ArrowLeft } from "lucide-react";
 import { sections } from "../data/sections.js";
+
+function HexNexusLogo() {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"
+      aria-hidden="true"
+    >
+      {/* Outer Hexagon */}
+      <polygon
+        points="16,3 28,10 28,24 16,31 4,24 4,10"
+        stroke="#FF1A1A"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+        className="opacity-90"
+      />
+      {/* Tri-Radial Vector Routing Paths */}
+      <line x1="16" y1="17" x2="28" y2="10" stroke="#FF4444" strokeWidth="1.3" strokeDasharray="2 2" />
+      <line x1="16" y1="17" x2="16" y2="31" stroke="#FF4444" strokeWidth="1.3" strokeDasharray="2 2" />
+      <line x1="16" y1="17" x2="4" y2="10" stroke="#FF4444" strokeWidth="1.3" strokeDasharray="2 2" />
+      {/* Three Satellite Vertex Nodes */}
+      <circle cx="28" cy="10" r="1.8" fill="#FF1A1A" />
+      <circle cx="16" cy="31" r="1.8" fill="#FF1A1A" />
+      <circle cx="4" cy="10" r="1.8" fill="#FF1A1A" />
+      {/* Central Orchestrator Core */}
+      <circle cx="16" cy="17" r="4.5" fill="#0A0A0A" stroke="#FF1A1A" strokeWidth="1.4" />
+      <circle cx="16" cy="17" r="2.2" fill="#FF4444" className="animate-pulse" />
+    </svg>
+  );
+}
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -72,8 +103,8 @@ export default function NavBar() {
             className="flex items-center gap-3 font-display text-sm tracking-tactical text-white"
             aria-label="Seshank AI Labs — Home"
           >
-            <span className="grid h-9 w-9 place-items-center border border-tactical-red/50 bg-tactical-redDim text-tactical-red">
-              <RadioTower size={17} strokeWidth={1.8} />
+            <span className="grid h-9 w-9 place-items-center border border-tactical-red/50 bg-tactical-redDim text-tactical-red shadow-tactical">
+              <HexNexusLogo />
             </span>
             SESHANK AI LABS
           </Link>
@@ -157,8 +188,11 @@ export default function NavBar() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] flex flex-col bg-stealth-deep/98 backdrop-blur-lg">
-          <div className="flex items-center justify-between px-5 py-4 sm:px-8">
-            <span className="font-display text-sm tracking-tactical text-white">
+          <div className="flex items-center justify-between px-5 py-4 sm:px-8 border-b border-industrial-line">
+            <span className="flex items-center gap-3 font-display text-sm tracking-tactical text-white">
+              <span className="grid h-8 w-8 place-items-center border border-tactical-red/50 bg-tactical-redDim text-tactical-red shadow-tactical">
+                <HexNexusLogo />
+              </span>
               SESHANK AI LABS
             </span>
             <button
