@@ -20,139 +20,118 @@ export function MotionAirframe() {
     const ctx = gsap.context((self) => {
       const q = self.selector;
 
-      /* ---- Grab agent architecture nodes ---- */
-      const masterGraph = q('[data-agent="master-graph"]');
-      const core = q('[data-agent="core"]');
-      const innerRings = q('[data-agent="inner-rings"]');
-      const outerRings = q('[data-agent="outer-rings"]');
-      const nodeGlows = q('[data-agent="node-glow"]');
+      /* ---- Grab architecture elements ---- */
+      const container = q('[data-agent="container"]');
+      const bgRings = q('[data-agent="bg-rings"]');
+      const coreNode = q('[data-node="langgraph"]');
+      const nodeFastAPI = q('[data-node="fastapi"]');
+      const nodeNeMo = q('[data-node="nemo"]');
+      const nodeRedis = q('[data-node="redis"]');
+      const nodePgvector = q('[data-node="pgvector"]');
+      const nodePydantic = q('[data-node="pydantic"]');
+      const nodeDeepEval = q('[data-node="deepeval"]');
       const packets = q("[data-packet]");
-      const energyBeams = q('[data-agent="energy-beam"]');
+      const beamLines = q('[data-agent="beam-line"]');
 
-      /* ---- Initial state: Centered transformation origin ---- */
-      gsap.set(masterGraph, {
-        transformBox: "view-box",
-        transformOrigin: "480px 310px",
-        willChange: "transform, opacity",
-      });
-
-      gsap.set(core, {
-        transformBox: "fill-box",
-        transformOrigin: "50% 50%",
-      });
-
-      gsap.set(packets, { autoAlpha: 0.2, scale: 0.8 });
+      /* ---- Initial state: Upright, stable, readable ---- */
+      gsap.set(packets, { autoAlpha: 0.3, scale: 0.8 });
 
       /* ---- Master timeline scrubbed smoothly to scroll ---- */
       const tl = gsap.timeline({
-        defaults: { ease: "none" },
+        defaults: { ease: "power1.inOut" },
         scrollTrigger: {
           trigger: root,
           start: "top top",
           end: "bottom bottom",
-          scrub: 0.8,
+          scrub: 0.6,
         },
       });
 
       /*
-       * UNIFIED HARMONIC MOTION (NO TILTING, NO DISCONNECTED LINES)
-       * The master graph rotates smoothly around its central core as one connected body.
+       * HIGH-PRECISION ARCHITECTURAL MOTION (ZERO TILT, ZERO FLIPPING)
+       * The nodes and labels stay 100% upright and legible.
+       * ONLY the faint background radar coordinate rings rotate subtly.
        */
+
+      // 1. Subtle, slow background coordinate ring rotation (60° total across the entire page)
       tl.to(
-        masterGraph,
+        bgRings,
         {
-          rotation: 240, // Smooth orbital rotation across the whole page scroll
+          rotation: 60,
           duration: 4,
+          transformOrigin: "300px 300px",
         },
         0
       )
-        // Counter-rotation of core for high-tech gyroscopic effect
+        // 2. Gentle vertical floating parallax that keeps the schematic centered with viewport
         .to(
-          core,
+          container,
           {
-            rotation: -360,
-            scale: 1.15,
+            y: -30,
             duration: 4,
           },
           0
         )
-        // Independent subtle spin on inner precision ring
+        // Phase 1 (0% -> 25%): Hero to About - Gateway & Security activate
         .to(
-          innerRings,
+          [nodeFastAPI, nodeNeMo],
           {
-            rotation: -180,
-            duration: 4,
-            transformBox: "view-box",
-            transformOrigin: "480px 310px",
-          },
-          0
-        )
-        // Phase 1 (0% -> 25%): Hero to About - Subtle breathing expansion
-        .to(
-          outerRings,
-          {
-            scale: 1.05,
-            opacity: 0.45,
-            duration: 1,
-            transformBox: "view-box",
-            transformOrigin: "480px 310px",
-          },
-          0
-        )
-        // Phase 2 (25% -> 50%): Capabilities - High energy red pulse
-        .to(
-          nodeGlows,
-          {
+            filter: "url(#intenseGlow)",
             stroke: "#FF1A1A",
-            fill: "#FF1A1A",
-            fillOpacity: 0.25,
-            filter: "url(#redGlow)",
             duration: 0.8,
           },
-          1
+          0.8
+        )
+        // Phase 2 (25% -> 50%): Capabilities - Core LangGraph & Redis semantic cache ignite
+        .to(
+          [coreNode, nodeRedis],
+          {
+            filter: "url(#intenseGlow)",
+            stroke: "#FF1A1A",
+            scale: 1.06,
+            transformOrigin: "center center",
+            duration: 0.8,
+          },
+          1.6
         )
         .to(
-          energyBeams,
+          beamLines,
           {
-            strokeWidth: 2.2,
-            opacity: 0.8,
+            stroke: "#FF4444",
+            strokeWidth: 2,
+            opacity: 0.85,
             duration: 0.8,
           },
-          1
+          1.6
         )
-        // Phase 3 (50% -> 75%): Telemetry - Streaming data packets activate
+        // Phase 3 (50% -> 75%): Telemetry & Proof - Streaming vector tokens pulse rapidly
         .to(
           packets,
           {
             autoAlpha: 1,
             scale: 1.4,
-            stagger: {
-              each: 0.08,
-              repeat: -1,
-              yoyo: true,
-            },
             duration: 0.6,
           },
-          2
-        )
-        // Phase 4 (75% -> 100%): Contact - Steady, grounded lock (NO TILT)
-        .to(
-          masterGraph,
-          {
-            scale: 0.96, // Slight clean pull-back into focal lock
-            opacity: 0.75,
-            duration: 1,
-          },
-          3
+          2.4
         )
         .to(
-          nodeGlows,
+          [nodePydantic, nodeDeepEval, nodePgvector],
           {
-            stroke: "#FF4444",
-            filter: "url(#glowFilter)",
-            duration: 1,
+            filter: "url(#intenseGlow)",
+            stroke: "#FF1A1A",
+            duration: 0.8,
           },
-          3
+          2.6
+        )
+        // Phase 4 (75% -> 100%): Contact - Steady, fully synchronized production lock
+        .to(
+          container,
+          {
+            scale: 1.02,
+            opacity: 0.9,
+            duration: 0.8,
+          },
+          3.2
         );
     }, layer);
 
@@ -162,167 +141,194 @@ export function MotionAirframe() {
   return (
     <div
       ref={layerRef}
-      className="pointer-events-none fixed right-[-14rem] top-1/2 z-0 h-[min(72vw,740px)] w-[min(90vw,900px)] -translate-y-1/2 opacity-75 sm:right-[-7rem] lg:right-[-1rem] xl:right-[1rem]"
+      className="pointer-events-none fixed right-2 top-1/2 z-0 h-[min(55vw,560px)] w-[min(55vw,560px)] -translate-y-1/2 opacity-85 sm:right-6 lg:right-10 xl:right-16"
       aria-hidden="true"
     >
       <svg
-        viewBox="0 0 960 620"
+        viewBox="0 0 600 600"
         role="img"
-        aria-label="Interactive Multi-Agent Cybernetic Systems Core"
+        aria-label="Seshank AI Labs 6-Pillar Agentic Architecture Schematic"
         className="h-full w-full overflow-visible"
         fill="none"
       >
         <defs>
-          {/* Base ambient glow */}
-          <filter id="glowFilter" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="3.5" result="blur" />
+          {/* Subtle ambient glow */}
+          <filter id="ambientGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
 
-          {/* Intense red highlight glow */}
-          <filter id="redGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
+          {/* Intense tactical red glow */}
+          <filter id="intenseGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="5.5" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
 
-          {/* Master Cybernetic Red Gradient */}
-          <linearGradient
-            id="cyberFade"
-            x1="160"
-            x2="800"
-            y1="80"
-            y2="540"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#FF4444" stopOpacity="0.95" />
-            <stop offset="0.5" stopColor="#FF1A1A" stopOpacity="0.55" />
+          {/* Master gradient */}
+          <linearGradient id="beamGradient" x1="100" y1="100" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#FF4444" stopOpacity="0.9" />
+            <stop offset="0.5" stopColor="#FF1A1A" stopOpacity="0.5" />
             <stop offset="1" stopColor="#FF4444" stopOpacity="0.85" />
           </linearGradient>
         </defs>
 
-        {/* ====== UNIFIED MASTER GRAPH (CONNECTED AS ONE COHESIVE SYSTEM) ====== */}
-        <g
-          data-agent="master-graph"
-          stroke="url(#cyberFade)"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          filter="url(#glowFilter)"
-        >
-          {/* ── PRECISION RADAR HORIZONS & COORDINATE RINGS ── */}
-          <g data-agent="outer-rings" opacity="0.3" strokeDasharray="6 6">
-            <circle cx="480" cy="310" r="140" />
-            <circle cx="480" cy="310" r="230" />
-            <circle cx="480" cy="310" r="300" />
+        {/* ====== MASTER CONTAINER (UPRIGHT AT ALL TIMES) ====== */}
+        <g data-agent="container">
+          {/* ── BACKGROUND GYROSCOPIC COORDINATE RINGS (SUBTLE SPIN ONLY) ── */}
+          <g data-agent="bg-rings" opacity="0.25" stroke="#FF4444" strokeDasharray="5 7">
+            <circle cx="300" cy="300" r="120" strokeWidth="1" />
+            <circle cx="300" cy="300" r="215" strokeWidth="1" />
+            <circle cx="300" cy="300" r="280" strokeWidth="1" />
+            <line x1="300" y1="20" x2="300" y2="580" strokeDasharray="4 6" opacity="0.4" />
+            <line x1="20" y1="300" x2="580" y2="300" strokeDasharray="4 6" opacity="0.4" />
           </g>
 
-          {/* ── GYROSCOPIC INNER DEGREE TICKS ── */}
-          <g data-agent="inner-rings" opacity="0.4" strokeDasharray="3 7">
-            <circle cx="480" cy="310" r="185" strokeWidth="1.2" />
-            {/* Cardinal cross lines */}
-            <line x1="480" y1="120" x2="480" y2="500" strokeDasharray="8 6" opacity="0.25" />
-            <line x1="290" y1="310" x2="670" y2="310" strokeDasharray="8 6" opacity="0.25" />
-          </g>
+          {/* ── PERMANENT CONNECTING BEAMS & DATA HIGHWAYS ── */}
+          <g data-agent="beams" stroke="url(#beamGradient)" strokeWidth="1.6" filter="url(#ambientGlow)" opacity="0.6">
+            {/* Core to Top (FastAPI) */}
+            <line data-agent="beam-line" x1="300" y1="300" x2="300" y2="105" />
+            {/* Core to Top-Right (NeMo) */}
+            <line data-agent="beam-line" x1="300" y1="300" x2="480" y2="195" />
+            {/* Core to Bottom-Right (Redis) */}
+            <line data-agent="beam-line" x1="300" y1="300" x2="480" y2="405" />
+            {/* Core to Bottom (pgvector) */}
+            <line data-agent="beam-line" x1="300" y1="300" x2="300" y2="495" />
+            {/* Core to Bottom-Left (Pydantic) */}
+            <line data-agent="beam-line" x1="300" y1="300" x2="120" y2="405" />
+            {/* Core to Top-Left (DeepEval) */}
+            <line data-agent="beam-line" x1="300" y1="300" x2="120" y2="195" />
 
-          {/* ── PERMANENT CONNECTING EDGES (NEVER DETACH) ── */}
-          <g data-agent="energy-beam" opacity="0.55">
-            {/* Core to Top-Left Node (Streaming Gateway) */}
-            <line x1="480" y1="310" x2="315" y2="185" strokeWidth="1.6" />
-            {/* Core to Top-Right Node (Guardrail Shield) */}
-            <line x1="480" y1="310" x2="645" y2="185" strokeWidth="1.6" />
-            {/* Core to Right Node (Memory/Cache) */}
-            <line x1="480" y1="310" x2="710" y2="310" strokeWidth="1.6" />
-            {/* Core to Bottom-Right Node (Worker Agent) */}
-            <line x1="480" y1="310" x2="645" y2="435" strokeWidth="1.6" />
-            {/* Core to Bottom-Left Node (Validator) */}
-            <line x1="480" y1="310" x2="315" y2="435" strokeWidth="1.6" />
-            {/* Core to Left Node (Evaluation Benchmark) */}
-            <line x1="480" y1="310" x2="250" y2="310" strokeWidth="1.6" />
-
-            {/* Perimeter Constellation Arcs (Connecting the outer nodes into a loop) */}
-            <path
-              d="M 315 185 L 645 185 L 710 310 L 645 435 L 315 435 L 250 310 Z"
+            {/* Perimeter Hexagonal Circuit Bus */}
+            <polygon
+              points="300,105 480,195 480,405 300,495 120,405 120,195"
               strokeDasharray="6 4"
               opacity="0.35"
             />
           </g>
 
-          {/* ── PULSING TOKEN PACKETS ALONG THE VECTORS ── */}
+          {/* ── ANIMATED DATA TOKEN PACKETS ── */}
           <g>
-            <circle data-packet cx="397" cy="247" r="3.2" fill="#FF1A1A" />
-            <circle data-packet cx="562" cy="247" r="3.2" fill="#FF4444" />
-            <circle data-packet cx="595" cy="310" r="3.2" fill="#FF1A1A" />
-            <circle data-packet cx="562" cy="372" r="3.2" fill="#FF4444" />
-            <circle data-packet cx="397" cy="372" r="3.2" fill="#FF1A1A" />
-            <circle data-packet cx="365" cy="310" r="3.2" fill="#FF4444" />
+            <circle data-packet cx="300" cy="202" r="3.2" fill="#FF1A1A" />
+            <circle data-packet cx="390" cy="247" r="3.2" fill="#FF4444" />
+            <circle data-packet cx="390" cy="352" r="3.2" fill="#FF1A1A" />
+            <circle data-packet cx="300" cy="397" r="3.2" fill="#FF4444" />
+            <circle data-packet cx="210" cy="352" r="3.2" fill="#FF1A1A" />
+            <circle data-packet cx="210" cy="247" r="3.2" fill="#FF4444" />
           </g>
 
-          {/* ── 6 SATELLITE CYBERNETIC NODES (MINIMALIST ICON GLYPHS, ZERO TEXT) ── */}
+          {/* ════════════════════════════════════════════════════════════════
+              THE 6 CORE ARCHITECTURAL PILLARS (SYMBOLS + CLEAN LABELS)
+             ════════════════════════════════════════════════════════════════ */}
 
-          {/* Node 1: Top-Left (FastAPI Streaming Gateway — Waveform Glyph) */}
-          <g data-agent="node-glow">
-            <circle cx="315" cy="185" r="28" fill="#0A0A0A" fillOpacity="0.85" strokeWidth="1.8" />
-            <circle cx="315" cy="185" r="14" strokeDasharray="3 3" opacity="0.6" />
-            <path d="M 305 185 L 310 178 L 315 192 L 320 180 L 325 185" strokeWidth="1.6" />
+          {/* ── 1. FASTAPI (TOP: ASYNC STREAMING GATEWAY) ── */}
+          <g data-node="fastapi" filter="url(#ambientGlow)">
+            <circle cx="300" cy="105" r="28" fill="#0A0A0A" stroke="#FF4444" strokeWidth="1.8" />
+            {/* Waveform streaming symbol */}
+            <path d="M 288 105 L 294 97 L 300 113 L 306 99 L 312 105" stroke="#FF1A1A" strokeWidth="1.8" strokeLinecap="round" />
+            <text x="300" y="65" textAnchor="middle" className="fill-white font-mono text-[10px] font-bold tracking-tactical uppercase" stroke="none">
+              FASTAPI
+            </text>
+            <text x="300" y="77" textAnchor="middle" className="fill-ember-glow font-mono text-[8px] tracking-tactical uppercase" stroke="none">
+              ASYNC SSE GATEWAY
+            </text>
           </g>
 
-          {/* Node 2: Top-Right (NeMo Guardrail — Shield Glyph) */}
-          <g data-agent="node-glow">
-            <circle cx="645" cy="185" r="28" fill="#0A0A0A" fillOpacity="0.85" strokeWidth="1.8" />
-            <path d="M 645 174 L 655 179 V 190 C 655 197, 645 201, 645 201 C 645 201, 635 197, 635 190 V 179 Z" strokeWidth="1.6" />
+          {/* ── 2. NEMO GUARDRAILS (TOP-RIGHT: SECURITY DEFENSE) ── */}
+          <g data-node="nemo" filter="url(#ambientGlow)">
+            <circle cx="480" cy="195" r="28" fill="#0A0A0A" stroke="#FF4444" strokeWidth="1.8" />
+            {/* Shield security symbol */}
+            <path d="M 480 183 L 491 188 V 199 C 491 206, 480 210, 480 210 C 480 210, 469 206, 469 199 V 188 Z" stroke="#FF1A1A" strokeWidth="1.8" />
+            <text x="520" y="193" textAnchor="start" className="fill-white font-mono text-[10px] font-bold tracking-tactical uppercase" stroke="none">
+              NEMO
+            </text>
+            <text x="520" y="205" textAnchor="start" className="fill-tactical-red font-mono text-[8px] tracking-tactical uppercase" stroke="none">
+              GUARDRAILS / PYRIT
+            </text>
           </g>
 
-          {/* Node 3: Right (Redis Memory Bus — Database Cylinder Glyph) */}
-          <g data-agent="node-glow">
-            <circle cx="710" cy="310" r="28" fill="#0A0A0A" fillOpacity="0.85" strokeWidth="1.8" />
-            <ellipse cx="710" cy="303" rx="12" ry="4.5" strokeWidth="1.4" />
-            <path d="M 698 303 V 311 C 698 314, 722 314, 722 311 V 303" strokeWidth="1.4" />
-            <path d="M 698 311 V 319 C 698 322, 722 322, 722 319 V 311" strokeWidth="1.4" />
+          {/* ── 3. REDIS (BOTTOM-RIGHT: SEMANTIC CACHE & BUS) ── */}
+          <g data-node="redis" filter="url(#ambientGlow)">
+            <circle cx="480" cy="405" r="28" fill="#0A0A0A" stroke="#FF4444" strokeWidth="1.8" />
+            {/* Database tier / memory symbol */}
+            <ellipse cx="480" cy="397" rx="13" ry="5" stroke="#FF1A1A" strokeWidth="1.5" />
+            <path d="M 467 397 V 406 C 467 409, 493 409, 493 406 V 397" stroke="#FF1A1A" strokeWidth="1.5" />
+            <path d="M 467 406 V 414 C 467 417, 493 417, 493 414 V 406" stroke="#FF1A1A" strokeWidth="1.5" />
+            <text x="520" y="403" textAnchor="start" className="fill-white font-mono text-[10px] font-bold tracking-tactical uppercase" stroke="none">
+              REDIS
+            </text>
+            <text x="520" y="415" textAnchor="start" className="fill-ember-glow font-mono text-[8px] tracking-tactical uppercase" stroke="none">
+              SEMANTIC CACHE
+            </text>
           </g>
 
-          {/* Node 4: Bottom-Right (Tool Worker Agent — Code Terminal Bracket Glyph) */}
-          <g data-agent="node-glow">
-            <circle cx="645" cy="435" r="28" fill="#0A0A0A" fillOpacity="0.85" strokeWidth="1.8" />
-            <path d="M 638 428 L 633 435 L 638 442" strokeWidth="1.6" />
-            <path d="M 652 428 L 657 435 L 652 442" strokeWidth="1.6" />
-            <line x1="642" y1="440" x2="648" y2="430" strokeWidth="1.5" />
+          {/* ── 4. PGVECTOR (BOTTOM: VECTOR PERSISTENCE & MEMORY) ── */}
+          <g data-node="pgvector" filter="url(#ambientGlow)">
+            <circle cx="300" cy="495" r="28" fill="#0A0A0A" stroke="#FF4444" strokeWidth="1.8" />
+            {/* Multi-dimensional vector grid symbol */}
+            <rect x="290" y="485" width="20" height="20" stroke="#FF1A1A" strokeWidth="1.4" opacity="0.8" />
+            <circle cx="300" cy="495" r="3.5" fill="#FF4444" />
+            <text x="300" y="535" textAnchor="middle" className="fill-white font-mono text-[10px] font-bold tracking-tactical uppercase" stroke="none">
+              PGVECTOR
+            </text>
+            <text x="300" y="547" textAnchor="middle" className="fill-industrial-silver font-mono text-[8px] tracking-tactical uppercase" stroke="none">
+              VECTOR PERSISTENCE
+            </text>
           </g>
 
-          {/* Node 5: Bottom-Left (Pydantic Schema Validator — Hexagon Check Glyph) */}
-          <g data-agent="node-glow">
-            <circle cx="315" cy="435" r="28" fill="#0A0A0A" fillOpacity="0.85" strokeWidth="1.8" />
-            <polygon points="315,422 326,429 326,441 315,448 304,441 304,429" strokeWidth="1.4" opacity="0.6" />
-            <path d="M 310 435 L 313 438 L 320 431" strokeWidth="1.8" />
+          {/* ── 5. PYDANTIC V2 (BOTTOM-LEFT: SCHEMA VALIDATION ENGINE) ── */}
+          <g data-node="pydantic" filter="url(#ambientGlow)">
+            <circle cx="120" cy="405" r="28" fill="#0A0A0A" stroke="#FF4444" strokeWidth="1.8" />
+            {/* Strict validation checkmark & hexagon symbol */}
+            <polygon points="120,391 132,398 132,412 120,419 108,412 108,398" stroke="#FF1A1A" strokeWidth="1.4" opacity="0.6" />
+            <path d="M 115 405 L 118 408 L 125 401" stroke="#FF4444" strokeWidth="2" strokeLinecap="round" />
+            <text x="80" y="403" textAnchor="end" className="fill-white font-mono text-[10px] font-bold tracking-tactical uppercase" stroke="none">
+              PYDANTIC V2
+            </text>
+            <text x="80" y="415" textAnchor="end" className="fill-tactical-red font-mono text-[8px] tracking-tactical uppercase" stroke="none">
+              SCHEMA INTEGRITY
+            </text>
           </g>
 
-          {/* Node 6: Left (DeepEval Benchmark Gauge Glyph) */}
-          <g data-agent="node-glow">
-            <circle cx="250" cy="310" r="28" fill="#0A0A0A" fillOpacity="0.85" strokeWidth="1.8" />
-            <path d="M 240 315 A 11 11 0 1 1 260 315" strokeWidth="1.6" />
-            <line x1="250" y1="315" x2="257" y2="307" strokeWidth="1.8" />
+          {/* ── 6. DEEPEVAL (TOP-LEFT: AUTOMATED CI/CD REGRESSION HARNESS) ── */}
+          <g data-node="deepeval" filter="url(#ambientGlow)">
+            <circle cx="120" cy="195" r="28" fill="#0A0A0A" stroke="#FF4444" strokeWidth="1.8" />
+            {/* Benchmark meter gauge symbol */}
+            <path d="M 109 200 A 12 12 0 1 1 131 200" stroke="#FF1A1A" strokeWidth="1.6" />
+            <line x1="120" y1="200" x2="128" y2="191" stroke="#FF4444" strokeWidth="2" strokeLinecap="round" />
+            <text x="80" y="193" textAnchor="end" className="fill-white font-mono text-[10px] font-bold tracking-tactical uppercase" stroke="none">
+              DEEPEVAL
+            </text>
+            <text x="80" y="205" textAnchor="end" className="fill-ember-glow font-mono text-[8px] tracking-tactical uppercase" stroke="none">
+              CI/CD EVALUATIONS
+            </text>
           </g>
 
-          {/* ── CENTRAL ORCHESTRATOR CORE (LANGGRAPH STATE ENGINE) ── */}
-          <g data-agent="core">
-            {/* Concentric rings */}
-            <circle cx="480" cy="310" r="68" strokeWidth="1.2" opacity="0.6" />
-            <circle cx="480" cy="310" r="50" strokeWidth="2.2" />
-            <circle cx="480" cy="310" r="26" fill="#FF1A1A" fillOpacity="0.18" />
-            <circle cx="480" cy="310" r="10" fill="#FF4444" />
-            {/* Center target crosshair */}
-            <line x1="480" y1="230" x2="480" y2="390" strokeDasharray="5 4" opacity="0.35" />
-            <line x1="400" y1="310" x2="560" y2="310" strokeDasharray="5 4" opacity="0.35" />
+          {/* ── CENTRAL MASTER ORCHESTRATOR: LANGGRAPH (CORE BRAIN) ── */}
+          <g data-node="langgraph" filter="url(#ambientGlow)">
+            {/* Outer coordinate collar */}
+            <circle cx="300" cy="300" r="58" stroke="#FF4444" strokeWidth="1.4" strokeDasharray="4 4" opacity="0.6" />
+            {/* Main core circle */}
+            <circle cx="300" cy="300" r="44" fill="#0A0A0A" stroke="#FF1A1A" strokeWidth="2.4" />
+            <circle cx="300" cy="300" r="22" fill="#FF1A1A" fillOpacity="0.18" />
+            <circle cx="300" cy="300" r="8" fill="#FF4444" />
             {/* Cyclic LangGraph flow arrows */}
-            <path d="M 462 278 Q 498 270 510 290" strokeWidth="1.8" />
-            <path d="M 510 290 L 510 280" strokeWidth="1.8" />
-            <path d="M 498 342 Q 462 350 450 330" strokeWidth="1.8" />
-            <path d="M 450 330 L 450 340" strokeWidth="1.8" />
+            <path d="M 284 274 Q 315 266 325 284" stroke="#FF4444" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M 325 284 L 325 274" stroke="#FF4444" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M 316 326 Q 285 334 275 316" stroke="#FF4444" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M 275 316 L 275 326" stroke="#FF4444" strokeWidth="1.8" strokeLinecap="round" />
+            {/* Central Badge Label */}
+            <text x="300" y="348" textAnchor="middle" className="fill-white font-mono text-[10px] font-bold tracking-tactical uppercase" stroke="none">
+              LANGGRAPH
+            </text>
+            <text x="300" y="359" textAnchor="middle" className="fill-tactical-red font-mono text-[8px] tracking-tactical uppercase" stroke="none">
+              CYCLIC ORCHESTRATOR
+            </text>
           </g>
         </g>
       </svg>
