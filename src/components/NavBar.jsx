@@ -1,11 +1,18 @@
 import { useState, useEffect, useCallback } from "react";
-import { Menu, X, RadioTower } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, RadioTower, ArrowLeft } from "lucide-react";
 import { sections } from "../data/sections.js";
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isHome = location.pathname === "/";
+  const isBlog = location.pathname.startsWith("/blog");
+  const isArchitecture = location.pathname.startsWith("/architectures");
 
   /* ---- Scroll detection for navbar background ---- */
   useEffect(() => {
@@ -14,8 +21,9 @@ export default function NavBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* ---- Scroll-spy via IntersectionObserver ---- */
+  /* ---- Scroll-spy via IntersectionObserver (only on home) ---- */
   useEffect(() => {
+    if (!isHome) return undefined;
     const observers = [];
     sections.forEach((section) => {
       const el = document.getElementById(section.id);
@@ -30,30 +38,36 @@ export default function NavBar() {
       observers.push(obs);
     });
     return () => observers.forEach((obs) => obs.disconnect());
-  }, []);
+  }, [isHome]);
 
-  const scrollTo = useCallback((id) => {
-    setMobileOpen(false);
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  const handleNavClick = useCallback(
+    (id) => {
+      setMobileOpen(false);
+      if (isHome) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        navigate(`/#${id}`);
+      }
+    },
+    [isHome, navigate]
+  );
 
   return (
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled
+          scrolled || !isHome
             ? "border-b border-industrial-line bg-industrial-panelGlass backdrop-blur-md"
             : "bg-transparent"
         }`}
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
           {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollTo("home");
+          <Link
+            to="/"
+            onClick={() => {
+              if (isHome) window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             className="flex items-center gap-3 font-display text-sm tracking-tactical text-white"
             aria-label="Seshank AI Labs — Home"
@@ -62,41 +76,71 @@ export default function NavBar() {
               <RadioTower size={17} strokeWidth={1.8} />
             </span>
             SESHANK AI LABS
-          </a>
+          </Link>
 
           {/* Desktop nav */}
-          <nav
-            aria-label="Primary"
-            className="hidden items-center gap-1 md:flex"
-          >
-            {sections.map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollTo(s.id);
-                }}
-                className={`px-3 py-2 font-mono text-xs uppercase tracking-tactical transition-colors ${
-                  activeSection === s.id
-                    ? "text-tactical-red"
-                    : "text-industrial-ash hover:text-industrial-silver"
-                }`}
-              >
-                {s.label}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo("contact");
-              }}
+          <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
+            {isHome ? (
+              sections.map((s) => (
+                <button
+                  type="button"
+                  key={s.id}
+                  onClick={() => handleNavClick(s.id)}
+                  className={`px-3 py-2 font-mono text-xs uppercase tracking-tactical transition-colors ${
+                    activeSection === s.id && !isBlog
+                      ? "text-tactical-red"
+                      : "text-industrial-ash hover:text-industrial-silver"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))
+            ) : (
+              <>
+                <Link
+                  to="/"
+                  className="px-3 py-2 font-mono text-xs uppercase tracking-tactical text-industrial-ash hover:text-tactical-red transition-colors flex items-center gap-1.5"
+                >
+                  <ArrowLeft size={13} />
+                  LAB HOME
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => handleNavClick("capabilities")}
+                  className={`px-3 py-2 font-mono text-xs uppercase tracking-tactical transition-colors ${
+                    isArchitecture ? "text-tactical-red" : "text-industrial-ash hover:text-industrial-silver"
+                  }`}
+                >
+                  ARCHITECTURES
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleNavClick("proof")}
+                  className="px-3 py-2 font-mono text-xs uppercase tracking-tactical text-industrial-ash hover:text-industrial-silver transition-colors"
+                >
+                  TELEMETRY
+                </button>
+              </>
+            )}
+
+            {/* Dedicated Blog Link */}
+            <Link
+              to="/blog"
+              className={`px-3 py-2 font-mono text-xs uppercase tracking-tactical transition-colors ${
+                isBlog ? "text-tactical-red font-semibold" : "text-industrial-ash hover:text-industrial-silver"
+              }`}
+            >
+              PUBLICATIONS
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => handleNavClick("contact")}
               className="ml-4 border border-tactical-red px-4 py-2 font-mono text-xs uppercase tracking-tactical text-tactical-red transition-colors hover:bg-tactical-redDim"
-              aria-label="Book a discovery call"
+              aria-label="Contact systems lab"
             >
               GET IN TOUCH
-            </a>
+            </button>
           </nav>
 
           {/* Mobile hamburger */}
@@ -125,34 +169,44 @@ export default function NavBar() {
               <X size={22} />
             </button>
           </div>
-          <nav className="flex flex-1 flex-col items-center justify-center gap-8">
-            {sections.map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollTo(s.id);
-                }}
-                className={`font-mono text-lg uppercase tracking-tactical transition-colors ${
-                  activeSection === s.id
-                    ? "text-tactical-red"
-                    : "text-industrial-ash"
-                }`}
-              >
-                {s.label}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo("contact");
-              }}
-              className="mt-4 border border-tactical-red px-8 py-3 font-mono text-sm uppercase tracking-tactical text-tactical-red transition-colors hover:bg-tactical-redDim"
+          <nav className="flex flex-1 flex-col items-center justify-center gap-7">
+            <Link
+              to="/"
+              onClick={() => setMobileOpen(false)}
+              className="font-mono text-lg uppercase tracking-tactical text-white"
+            >
+              LAB HOME
+            </Link>
+            <button
+              type="button"
+              onClick={() => handleNavClick("capabilities")}
+              className="font-mono text-lg uppercase tracking-tactical text-industrial-ash hover:text-tactical-red"
+            >
+              ARCHITECTURES
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavClick("proof")}
+              className="font-mono text-lg uppercase tracking-tactical text-industrial-ash hover:text-tactical-red"
+            >
+              TELEMETRY &amp; PROOF
+            </button>
+            <Link
+              to="/blog"
+              onClick={() => setMobileOpen(false)}
+              className={`font-mono text-lg uppercase tracking-tactical ${
+                isBlog ? "text-tactical-red" : "text-industrial-ash hover:text-tactical-red"
+              }`}
+            >
+              PUBLICATIONS &amp; BLOG
+            </Link>
+            <button
+              type="button"
+              onClick={() => handleNavClick("contact")}
+              className="mt-4 border border-tactical-red px-8 py-3 font-mono text-sm uppercase tracking-tactical text-tactical-red hover:bg-tactical-redDim"
             >
               GET IN TOUCH
-            </a>
+            </button>
           </nav>
         </div>
       )}

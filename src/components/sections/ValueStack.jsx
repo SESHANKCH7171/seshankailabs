@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { valueCards } from "../../data/sections.js";
 
 export default function ValueStack() {
@@ -65,15 +66,15 @@ export default function ValueStack() {
               ))}
             </div>
 
-            {/* How this works link */}
-            <a
-              href="#contact"
-              className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-tactical text-industrial-ash transition-colors group-hover:text-tactical-red"
-              aria-label={`Learn how ${card.title} works`}
+            {/* Inspect Architecture Link */}
+            <Link
+              to={`/architectures/${card.id}`}
+              className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-tactical text-tactical-red transition-colors hover:text-white"
+              aria-label={`Inspect ${card.title} architecture`}
             >
-              How this works
+              INSPECT ARCHITECTURE
               <ArrowRight size={13} />
-            </a>
+            </Link>
           </article>
         ))}
       </div>
