@@ -141,7 +141,7 @@ export function MotionAirframe() {
   return (
     <div
       ref={layerRef}
-      className="pointer-events-none fixed right-[-4rem] top-1/2 z-0 h-[340px] w-[340px] -translate-y-1/2 opacity-25 transition-opacity duration-500 sm:opacity-85 sm:h-[480px] sm:w-[480px] sm:right-6 lg:h-[560px] lg:w-[560px] lg:right-10 xl:right-16"
+      className="pointer-events-none fixed right-[-4rem] top-1/2 z-0 h-[340px] w-[340px] -translate-y-1/2 opacity-25 transition-opacity duration-500 sm:opacity-85 sm:h-[440px] sm:w-[440px] sm:right-4 lg:h-[500px] lg:w-[500px] lg:right-4 xl:h-[550px] xl:w-[550px] xl:right-12"
       aria-hidden="true"
     >
       <svg
