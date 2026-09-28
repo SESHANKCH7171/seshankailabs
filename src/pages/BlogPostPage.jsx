@@ -3,6 +3,17 @@ import { ArrowLeft, Clock, Calendar, Share2, ArrowUpRight, Terminal, Layers } fr
 import { blogPosts } from "../data/blogPosts.js";
 import HotelArchitectureDiagram from "../components/HotelArchitectureDiagram.jsx";
 
+function renderFormattedText(text) {
+  if (!text) return "";
+  return text
+    .replace(
+      /\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-tactical-red hover:text-white underline decoration-tactical-red/60 underline-offset-4 transition-colors font-mono font-medium inline-flex items-center gap-0.5">$1 <span class="text-[10px]">↗</span></a>'
+    )
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+    .replace(/`([^`]+)`/g, '<code class="rounded bg-stealth-deep border border-industrial-line px-1.5 py-0.5 font-mono text-xs text-ember-glow">$1</code>');
+}
+
 export default function BlogPostPage() {
   const { slug } = useParams();
   const post = blogPosts.find((p) => p.slug === slug);
@@ -228,19 +239,57 @@ export default function BlogPostPage() {
             return (
               <ul key={idx} className="space-y-2 list-disc list-inside text-industrial-silver">
                 {items.map((it, i) => (
-                  <li key={i} dangerouslySetInnerHTML={{ __html: it.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>') }} />
+                  <li
+                    key={i}
+                    dangerouslySetInnerHTML={{
+                      __html: renderFormattedText(it),
+                    }}
+                  />
                 ))}
               </ul>
             );
           }
 
-          // Standard paragraph
+          // Dedicated Repository & Demo Action Buttons
+          if (trimmed.includes("github.com/SESHANKCH7171/hotel-gm-system-3.0")) {
+            return (
+              <div key={idx} className="my-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a
+                  href="https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 rounded border border-tactical-red/60 bg-tactical-redDim hover:bg-tactical-red hover:text-stealth-black text-tactical-red font-mono text-xs font-bold transition-all group"
+                >
+                  <span className="flex items-center gap-2">
+                    <Terminal size={16} />
+                    <span>OPEN-SOURCE GITHUB REPO</span>
+                  </span>
+                  <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+
+                <a
+                  href="https://youtu.be/lGpPy6ma4SQ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 rounded border border-ember-glow/60 bg-ember-glowDim hover:bg-ember-glow hover:text-stealth-black text-ember-glow font-mono text-xs font-bold transition-all group"
+                >
+                  <span className="flex items-center gap-2">
+                    <span>📺</span>
+                    <span>WATCH ON YOUTUBE (1:49)</span>
+                  </span>
+                  <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+              </div>
+            );
+          }
+
+          // Standard paragraph with clickable links
           return (
             <p
               key={idx}
               className="text-base leading-relaxed text-industrial-silver"
               dangerouslySetInnerHTML={{
-                __html: trimmed.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>'),
+                __html: renderFormattedText(trimmed),
               }}
             />
           );

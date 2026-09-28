@@ -252,9 +252,9 @@ To solve this, we enforced the **Dual-Delivery Pattern**:
 
 The full production source code, LangGraph state machine, LiveKit WebRTC worker, and Docker configuration are open-sourced on GitHub:
 
-🔗 **GitHub Repository:** [https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git](https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git)
+🔗 **GitHub Repository:** [github.com/SESHANKCH7171/hotel-gm-system-3.0](https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git)
 
-📺 **YouTube Live Demo:** [https://youtu.be/lGpPy6ma4SQ](https://youtu.be/lGpPy6ma4SQ)
+📺 **YouTube Live Demo:** [Watch Full 1-Min Live Demonstration](https://youtu.be/lGpPy6ma4SQ)
     `,
   },
 ];
