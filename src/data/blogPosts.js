@@ -126,7 +126,61 @@ In our production build of **Hotel GM Intelligence Copilot 3.0**, our core objec
 
 ### The WebRTC Multimodal Pipeline Architecture
 
-Standard HTTP polling and basic WebSockets break down in real-world voice environments due to buffer bloat, packet drops, and lack of audio track synchronization. We architected a dedicated WebRTC worker pipeline powered by LiveKit Cloud:
+Standard HTTP polling and basic WebSockets break down in real-world voice environments due to buffer bloat, packet drops, and lack of audio track synchronization. We architected a dual-entrypoint pipeline: an executive Streamlit analytical dashboard paired with an ultra-low-latency WebRTC worker orchestrated by LiveKit Cloud.
+
+\`\`\`architecture
+┌─────────────────────────────────────────────────┐      ┌─────────────────────────────┐
+│              GM Dashboard (Streamlit)           │      │  🎙️ WebRTC Voice Copilot   │
+│  [Daily Brief] [Chat] [Live Data] [Memory]      │      │     (LiveKit + Voice Agent) │
+└──────────────────┬──────────────────────────────┘      └──────────────┬──────────────┘
+                   │                                                    │
+                   └──────────────────┐           ┌─────────────────────┘
+                                      ▼           ▼
+                            ┌──────────────────┐
+                            │  LangGraph pipeline │  fan-out → domain nodes → fan-in → synthesis
+                            └──┬──┬──┬──┬────────┘
+                               │  │  │  │
+                       ┌───────┘  │  │  └──────────┐
+                       ▼          ▼  ▼             ▼
+                   ┌───────┐ ┌──────┐ ┌────────┐ ┌──────────┐
+                   │Revenue│ │Ops   │ │Repute  │ │Payroll   │
+                   │node   │ │node  │ │node    │ │node      │
+                   └───┬───┘ └──┬───┘ └───┬────┘ └────┬─────┘
+                       │        │          │           │
+                       ▼        ▼          ▼           ▼
+                     PMS/RMS  Arrivals   Reviews    Payroll
+                     tools    tools      tools      tools
+\`\`\`
+
+Each domain node executes one deterministic Python fetch (\`tools/*.py\`) $\\rightarrow$ one LLM call that turns the JSON into narrative analysis. No tool-selection hallucination, no arbitrary loops, no \`allow_delegation\` failures—uncertainty is resolved deterministically in code.
+
+When the General Manager speaks over WebRTC, the real-time audio session executes across this sub-second acoustic chain:
+
+\`\`\`architecture
+[Executive Mic / Browser] <──(WebRTC UDP / RTP)──> [LiveKit Cloud Gateway]
+                                                           │
+                                                           ▼
+                                                [Silero VAD Endpointing]
+                                                           │
+                                                           ▼
+                                                [Groq Whisper Large V3]
+                                                           │
+                                                           ▼
+                                                [Groq LPU: gpt-oss-20b]
+                                                           │
+                                                           ▼
+                                                [Tool: query_hotel_systems()]
+                                                           │
+                                                           ▼
+                                                [LangGraph Anomaly Engine]
+                                                           │
+                                                           ▼
+                                                [Deepgram Aura-2 Neural TTS]
+                                                           │
+[Speaker Audio Out] <────(Sub-100ms TTFB)─────── [LiveKit WebRTC Track]
+\`\`\`
+
+Here is the exact worker implementation bridging LiveKit with Groq and Deepgram:
 
 \`\`\`python
 class HotelCopilotAgent(Agent):

@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Clock, Calendar, Share2, ArrowUpRight, Terminal } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, Share2, ArrowUpRight, Terminal, Layers } from "lucide-react";
 import { blogPosts } from "../data/blogPosts.js";
 
 export default function BlogPostPage() {
@@ -101,21 +101,44 @@ export default function BlogPostPage() {
             return <hr key={idx} className="border-industrial-line my-8" />;
           }
 
-          // Code blocks
+          // Code blocks & Architecture Diagrams
           if (trimmed.startsWith("```")) {
             const lines = trimmed.split("\n");
             const lang = lines[0].replace("```", "").trim();
             const code = lines.slice(1, -1).join("\n");
+            const isArchitecture = ["architecture", "diagram", "ascii"].includes(lang.toLowerCase());
+
             return (
-              <div key={idx} className="border border-industrial-line bg-industrial-panel p-5 my-6 overflow-hidden">
+              <div
+                key={idx}
+                className={`border bg-industrial-panel p-5 my-6 overflow-hidden ${
+                  isArchitecture ? "border-ember-glow/40 shadow-[0_0_20px_rgba(245,158,11,0.05)]" : "border-industrial-line"
+                }`}
+              >
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-industrial-line font-mono text-[10px] uppercase text-industrial-ash">
-                  <span className="flex items-center gap-1.5 text-white">
-                    <Terminal size={12} className="text-tactical-red" />
-                    <span>PRODUCTION IMPLEMENTATION</span>
+                  <span className="flex items-center gap-2 text-white">
+                    {isArchitecture ? (
+                      <Layers size={14} className="text-ember-glow" />
+                    ) : (
+                      <Terminal size={12} className="text-tactical-red" />
+                    )}
+                    <span className="font-semibold tracking-tactical">
+                      {isArchitecture ? "SYSTEM TOPOLOGY & PIPELINE GRAPH" : "PRODUCTION IMPLEMENTATION"}
+                    </span>
                   </span>
-                  <span className="text-ember-glow">{lang || "CODE"}</span>
+                  <span className={`px-2 py-0.5 border text-[9px] ${
+                    isArchitecture
+                      ? "border-ember-glow/50 text-ember-glow bg-ember-glow/10"
+                      : "border-industrial-line text-ember-glow bg-stealth-deep"
+                  }`}>
+                    {lang || "CODE"}
+                  </span>
                 </div>
-                <pre className="overflow-x-auto font-mono text-xs text-tactical-red leading-relaxed">
+                <pre
+                  className={`overflow-x-auto font-mono text-xs leading-relaxed p-2 rounded bg-stealth-deep/80 ${
+                    isArchitecture ? "text-industrial-silver font-semibold" : "text-tactical-red"
+                  }`}
+                >
                   <code>{code}</code>
                 </pre>
               </div>
