@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Clock, Calendar, Share2, ArrowUpRight, Terminal, Layers } from "lucide-react";
 import { blogPosts } from "../data/blogPosts.js";
+import HotelArchitectureDiagram from "../components/HotelArchitectureDiagram.jsx";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -107,6 +108,10 @@ export default function BlogPostPage() {
             const lang = lines[0].replace("```", "").trim();
             const code = lines.slice(1, -1).join("\n");
             const isArchitecture = ["architecture", "diagram", "ascii"].includes(lang.toLowerCase());
+
+            if (isArchitecture && (code.includes("LangGraph pipeline") || code.includes("GM Dashboard"))) {
+              return <HotelArchitectureDiagram key={idx} />;
+            }
 
             return (
               <div
