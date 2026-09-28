@@ -52,6 +52,21 @@ export default function ArchitectureDetailPage() {
           <span className="text-industrial-ash uppercase ml-3">REPRESENTATIVE TARGETS:</span>
           <span className="border border-industrial-line bg-industrial-panel px-3 py-1 text-ember-glow">{arch.typicalTargets}</span>
         </div>
+
+        {arch.githubRepo && (
+          <div className="mt-5">
+            <a
+              href={arch.githubRepo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border border-tactical-red/60 bg-tactical-redDim px-4 py-2 font-mono text-xs text-tactical-red hover:bg-tactical-red hover:text-stealth-black transition-colors"
+            >
+              <Terminal size={14} />
+              <span>VIEW OPEN-SOURCE REPOSITORY ON GITHUB</span>
+              <ArrowUpRight size={14} />
+            </a>
+          </div>
+        )}
       </div>
 
       {/* Metrics Grid */}

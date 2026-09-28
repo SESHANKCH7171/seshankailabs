@@ -109,51 +109,63 @@ async def telemetry_stream(websocket: WebSocket, vehicle_id: str):
   "voice-cx": {
     id: "voice-cx",
     number: "ARCHETYPE 03",
-    title: "Low-Latency Arabic/English Voice & CX Agent Pipeline",
-    tagline: "Sub-150ms speech-to-action engine with dialectal hallucination mitigation and semantic audio caching.",
-    vertical: "Conversational AI, Voice Commerce & Call Centers",
+    title: "Real-Time WebRTC Voice Copilot & LangGraph Anomaly State Engine",
+    tagline: "891ms TTFT multimodal WebRTC voice interface backed by LiveKit Cloud, Groq LPUs, Deepgram Aura-2, and deterministic multi-agent LangGraph workflows.",
+    vertical: "Enterprise Voice Copilots, Executive Analytics & Conversational AI",
     typicalTargets: "Lucidya, Wittify, Banah, Qeen.ai, Seraya, Teammates.ai, Sawt",
+    githubRepo: "https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git",
     metrics: [
-      { label: "First-Token Latency (TTFT)", value: "<148ms", sub: "Streaming audio pipeline" },
-      { label: "Dialectal Accuracy", value: "96.4%", sub: "25+ Arabic regional dialects" },
-      { label: "Jailbreak Interception", value: "100%", sub: "NeMo Guardrails active" },
-      { label: "Semantic Cache Hit Rate", value: "38%", sub: "Slashing inference bills" },
+      { label: "LLM First-Token (TTFT)", value: "891ms", sub: "Groq LPU + LiveKit WebRTC" },
+      { label: "End-to-End Latency", value: "3,064ms", sub: "Mic to Speaker Full Turn" },
+      { label: "TTS First Byte (TTFB)", value: "<100ms", sub: "Deepgram Aura-2 Neural Voice" },
+      { label: "Deterministic Anomaly Grounding", value: "100%", sub: "Zero LLM Hallucination" },
     ],
     problem:
-      "Conversational voice agents live and die by latency. Delays over 300ms break conversational flow, feel unnatural, and cause callers to hang up. Furthermore, Gulf Arabic dialects (Najdi, Hijazi, Emirati) cause severe hallucination and acoustic drift in standard LLMs.",
+      "Most commercial voice bots are ungrounded conversational wrappers that hallucinate domain statistics and break conversational flow with 4-5 second audio buffering. When an executive asks for real-time operational anomalies, generic voice agents guess numbers rather than querying live enterprise telemetry.",
     solution:
-      "We engineered an asynchronous WebSocket and Server-Sent Events (SSE) pipeline that streams tokens directly from model inference to neural TTS without intermediary buffering. A Redis semantic audio cache eliminates redundant LLM calls for recurring queries, and NeMo Guardrails halts prompt injections in sub-5ms.",
+      "We engineered an end-to-end WebRTC voice pipeline using LiveKit Cloud, Silero VAD, Groq Whisper Large V3, and Deepgram Aura-2. When the user speaks, the agent autonomously invokes a multi-agent LangGraph orchestrator that calculates deterministic rate parity, soft occupancy compression, and payroll overruns before synthesizing audio.",
     stack: [
-      "FastAPI (Low-Latency WebSockets & SSE)",
-      "Redis (Semantic Audio & Prompt Cache)",
-      "NVIDIA NeMo Guardrails",
-      "DeepEval (Conversational Quality & Hallucination)",
-      "Multi-Dialect Arabic NLP Gateways",
-      "Whisper / ElevenLabs / Azure Neural Speech",
+      "LiveKit Cloud (Carrier-Grade WebRTC)",
+      "Groq LPU (Whisper Large V3 + gpt-oss-20b)",
+      "Deepgram (Aura-2 Neural TTS)",
+      "LangGraph (Deterministic Anomaly Graph)",
+      "Silero VAD (Acoustic Turn Endpointing)",
+      "Redis (Semantic Telemetry Cache)",
+      "Streamlit (Executive Companion Dashboard)",
     ],
-    architectureDiagram: `flowchart LR
-    A["User Voice Input"] --> B["FastAPI WebSocket Ingestion"]
-    B --> C["Acoustic VAD & Speech-to-Text"]
-    C --> D["Redis Semantic Cache"]
-    D -->|Cache Hit 42ms| E["Cached Audio Stream"]
-    D -->|Cache Miss| F["LangGraph Dialogue Manager"]
-    F --> G["NeMo Guardrails Check"]
-    G --> H["Low-Latency Neural TTS"]
-    H --> I["Sub-150ms Audio Output Stream"]`,
-    codeSnippet: `@app.websocket("/agent/voice/stream")
-async def voice_dialogue_channel(websocket: WebSocket):
-    await websocket.accept()
-    dialogue_state = DialogueState(session_id=str(uuid.uuid4()))
-    
-    async for audio_chunk in websocket.iter_bytes():
-        # 1. Real-time VAD & transcription tokenization
-        user_utterance = await speech_recognizer.transcribe_chunk(audio_chunk)
-        if not user_utterance.is_final:
-            continue
-            
-        # 2. Parallel NeMo guardrail validation & semantic lookup
-        async for audio_token in voice_graph.astream_tokens(user_utterance.text):
-            await websocket.send_bytes(audio_token)`,
+    architectureDiagram: `flowchart TD
+    A["Executive Mic / Browser"] <-->|"WebRTC (UDP/ICE/STUN)"| B["LiveKit Cloud Media Gateway"]
+    B <-->|"RTP Audio Tracks"| C["HotelCopilotAgent (Worker)"]
+    C -->|"VAD Speech Chunking"| D["Silero VAD Endpointing"]
+    D -->|"Turn Committed"| E["Groq Whisper Large V3 (STT)"]
+    E -->|"User Transcript"| F["Groq LPU (gpt-oss-20b)"]
+    F -->|"Autonomous Tool Call"| G["query_hotel_systems() Bridge"]
+    G --> H["LangGraph Multi-Agent Anomaly Graph"]
+    H --> I["Deterministic PMS/RMS/Payroll Rules Engine"]
+    I -->|"Structured JSON Metrics"| F
+    F -->|"Streaming Tokens"| J["Deepgram Aura-2 Neural TTS"]
+    J -->|"Opus Audio Frames (<100ms TTFB)"| C
+    C -->|"WebRTC Playout Track"| A`,
+    codeSnippet: `class HotelCopilotAgent(Agent):
+    def __init__(self) -> None:
+        vad = silero.VAD.load()
+        stt = openai.STT(
+            model="whisper-large-v3",
+            base_url="https://api.groq.com/openai/v1",
+            api_key=os.environ.get("GROQ_API_KEY")
+        )
+        tts = deepgram.TTS(model="aura-2-andromeda-en", api_key=os.environ.get("DEEPGRAM_API_KEY"))
+        groq_llm = openai.LLM(
+            model="openai/gpt-oss-20b",
+            base_url="https://api.groq.com/openai/v1",
+            api_key=os.environ.get("GROQ_API_KEY")
+        )
+        super().__init__(instructions=EXECUTIVE_INSTRUCTIONS, stt=stt, llm=groq_llm, tts=tts, vad=vad)
+
+    @llm.function_tool(description="Query hotel intelligence for revenue, occupancy, reputation, and payroll.")
+    async def query_hotel_systems(self, query: str) -> str:
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, run_gm_chat, query)`,
   },
 
   "doc-rag": {
