@@ -113,6 +113,7 @@ In production agentic AI, the model is merely a cognitive utility. The speed, se
     summary:
       "A deep technical breakdown of how we achieved an 891ms Time-To-First-Token (TTFT) and 3.0s end-to-end voice latency in an executive hotel copilot, bridging LiveKit WebRTC, Groq LPUs (Whisper V3 + gpt-oss-20b), Deepgram Aura-2, and deterministic LangGraph pipelines.",
     tags: ["LIVEKIT", "WEBRTC", "GROQ LPU", "LANGGRAPH", "DEEPGRAM AURA", "VOICE AI"],
+    youtubeId: "lGpPy6ma4SQ",
     content: `
 ### The Fragility of Toy Voice Agents
 
@@ -247,11 +248,13 @@ To solve this, we enforced the **Dual-Delivery Pattern**:
 
 ---
 
-### Open-Source Repository
+### Open-Source Repository & Video Demonstration
 
 The full production source code, LangGraph state machine, LiveKit WebRTC worker, and Docker configuration are open-sourced on GitHub:
 
 🔗 **GitHub Repository:** [https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git](https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git)
+
+📺 **YouTube Live Demo:** [https://youtu.be/lGpPy6ma4SQ](https://youtu.be/lGpPy6ma4SQ)
     `,
   },
 ];

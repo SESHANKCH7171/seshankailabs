@@ -83,6 +83,33 @@ export default function BlogPostPage() {
         {post.summary}
       </div>
 
+      {/* Video Demonstration Embed */}
+      {post.youtubeId && (
+        <div className="mt-10 overflow-hidden rounded-lg border border-tactical-red/50 bg-industrial-panel shadow-[0_0_35px_rgba(255,26,26,0.12)]">
+          <div className="flex items-center justify-between border-b border-industrial-line bg-industrial-panelDeep px-4 py-3 font-mono text-xs text-industrial-ash">
+            <span className="flex items-center gap-2.5 font-bold tracking-tactical text-white">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tactical-red opacity-75"></span>
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-tactical-red"></span>
+              </span>
+              LIVE SYSTEM DEMONSTRATION · 1:49 MIN
+            </span>
+            <span className="rounded border border-tactical-red/40 bg-tactical-redDim px-2.5 py-0.5 text-[10px] font-semibold text-tactical-red">
+              WEBRTC AUDIO + LANGGRAPH
+            </span>
+          </div>
+          <div className="relative aspect-video w-full bg-stealth-deep">
+            <iframe
+              className="absolute inset-0 h-full w-full"
+              src={`https://www.youtube.com/embed/${post.youtubeId}?rel=0`}
+              title="Hotel Copilot Live WebRTC Voice Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
+
       {/* Render Content */}
       <div className="mt-12 space-y-8 font-sans text-base leading-8 text-industrial-silver">
         {post.content.split("\n\n").map((block, idx) => {
