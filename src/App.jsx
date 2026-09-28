@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import NavBar from "./components/NavBar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import ArchitectureDetailPage from "./pages/ArchitectureDetailPage.jsx";
@@ -28,6 +30,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Analytics />
       <main
         data-scroll-root
         className="scan-overlay relative min-h-screen overflow-hidden bg-stealth-black text-industrial-silver font-sans"
