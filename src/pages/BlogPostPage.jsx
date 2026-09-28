@@ -94,9 +94,20 @@ export default function BlogPostPage() {
               </span>
               LIVE SYSTEM DEMONSTRATION · 1:49 MIN
             </span>
-            <span className="rounded border border-tactical-red/40 bg-tactical-redDim px-2.5 py-0.5 text-[10px] font-semibold text-tactical-red">
-              WEBRTC AUDIO + LANGGRAPH
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="hidden sm:inline-block rounded border border-tactical-red/40 bg-tactical-redDim px-2.5 py-0.5 text-[10px] font-semibold text-tactical-red">
+                WEBRTC AUDIO + LANGGRAPH
+              </span>
+              <a
+                href={`https://youtu.be/${post.youtubeId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded border border-industrial-line bg-stealth-deep px-2.5 py-1 text-[11px] text-white hover:border-tactical-red hover:text-tactical-red transition-colors"
+              >
+                <span>OPEN ON YOUTUBE</span>
+                <ArrowUpRight size={12} />
+              </a>
+            </div>
           </div>
           <div className="relative aspect-video w-full bg-stealth-deep">
             <iframe
