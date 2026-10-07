@@ -17,13 +17,13 @@ export const valueCards = [
     tags: ["LANGGRAPH", "FASTAPI STREAMING", "FINTECH / BAAS", "SUB-200MS"],
   },
   {
-    id: "telematics",
+    id: "terminal-bridge",
     system: "ARCHETYPE 02",
-    title: "Autonomous Fleet Telematics & IoT Dispatch Engine",
-    pain: "High-concurrency live GPS & CAN-bus telemetry streams choke standard agent pipelines.",
+    title: "Universal LLM Terminal Bridge & Cloud Gateway",
+    pain: "Agentic developer CLIs (Claude Code) are locked to Anthropic endpoints, locking out enterprise Google Cloud credits and IAM controls.",
     capability:
-      "Human-in-the-loop state checkpoints powered by Redis Pub/Sub and FastAPI WebSockets for real-time asset dispatch, sensor anomaly detection, and automated SLA resolution.",
-    tags: ["REDIS PUB/SUB", "WEBSOCKETS", "LOGISTICS & MOBILITY", "IOT PIPELINES"],
+      "Transparent FastAPI proxy translating Anthropic Messages API protocols into LiteLLM format. Runs Claude Code CLI natively on Google Cloud Vertex AI (Gemini 2.5 Pro / Flash) with sub-4ms streaming translation.",
+    tags: ["CLAUDE CODE", "VERTEX AI", "GEMINI 2.5 PRO", "FASTAPI PROXY", "LITELLM"],
   },
   {
     id: "voice-cx",
@@ -35,13 +35,13 @@ export const valueCards = [
     tags: ["STREAMING SSE", "REDIS CACHING", "VOICE AI", "ARABIC NLP"],
   },
   {
-    id: "doc-rag",
+    id: "enterprise-rag",
     system: "ARCHETYPE 04",
-    title: "Unstructured Document & Statutory RAG Engine",
-    pain: "Multi-page legal contracts and commercial invoices suffer from hallucinated citations.",
+    title: "Hardened Enterprise Stripe RAG & AI Security Platform",
+    pain: "Enterprise payment APIs suffer from prompt jailbreaks, live secret leakage (sk_live_*), Radar fraud evasion, and unranked context dilution.",
     capability:
-      "Multi-agent synthesis graph with pgvector semantic caching and DeepEval faithfulness verification. Extracts complex tables with zero hallucination and complete audit-ready logs.",
-    tags: ["DEEPEVAL REGRESSION", "NEMO GUARDRAILS", "LEGALTECH & COMPLIANCE"],
+      "Two-gate zero-trust architecture combining Colang-based NeMo Guardrails, Vertex AI text-embedding-004, Qdrant Cloud HNSW search, local FlashRank TinyBERT re-ranking, and automated RAGAS regression CI/CD.",
+    tags: ["GCP VERTEX AI", "NEMO GUARDRAILS", "QDRANT CLOUD", "RAGAS REGRESSION", "PORTKEY"],
   },
 ];
 

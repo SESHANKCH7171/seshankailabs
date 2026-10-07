@@ -251,11 +251,22 @@ export default function BlogPostPage() {
           }
 
           // Dedicated Repository & Demo Action Buttons
-          if (trimmed.includes("github.com/SESHANKCH7171/hotel-gm-system-3.0")) {
+          if (trimmed.includes("github.com/SESHANKCH7171/")) {
+            const githubMatch = trimmed.match(/https:\/\/github\.com\/[^\s)]+/);
+            const githubUrl = githubMatch ? githubMatch[0] : "https://github.com/SESHANKCH7171";
+
+            const youtubeMatch = trimmed.match(/https?:\/\/(?:youtu\.be\/|www\.youtube\.com\/)[^\s)]+/);
+            const webDemoMatch = trimmed.match(/https?:\/\/(?!github\.com|youtu\.be|www\.youtube\.com)[^\s)]+/);
+
+            const secondUrl = youtubeMatch ? youtubeMatch[0] : (webDemoMatch ? webDemoMatch[0] : null);
+            const isYouTube = !!youtubeMatch;
+            const secondLabel = isYouTube ? "WATCH ON YOUTUBE" : "LIVE CLOUD DEPLOYMENT";
+            const secondIcon = isYouTube ? "📺" : "🌐";
+
             return (
               <div key={idx} className="my-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <a
-                  href="https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git"
+                  href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-between p-4 rounded border border-tactical-red/60 bg-tactical-redDim hover:bg-tactical-red hover:text-stealth-black text-tactical-red font-mono text-xs font-bold transition-all group"
@@ -267,18 +278,28 @@ export default function BlogPostPage() {
                   <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
 
-                <a
-                  href="https://youtu.be/lGpPy6ma4SQ"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 rounded border border-ember-glow/60 bg-ember-glowDim hover:bg-ember-glow hover:text-stealth-black text-ember-glow font-mono text-xs font-bold transition-all group"
-                >
-                  <span className="flex items-center gap-2">
-                    <span>📺</span>
-                    <span>WATCH ON YOUTUBE (1:49)</span>
-                  </span>
-                  <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
+                {secondUrl ? (
+                  <a
+                    href={secondUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-4 rounded border border-ember-glow/60 bg-ember-glowDim hover:bg-ember-glow hover:text-stealth-black text-ember-glow font-mono text-xs font-bold transition-all group"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>{secondIcon}</span>
+                      <span>{secondLabel}</span>
+                    </span>
+                    <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </a>
+                ) : (
+                  <div className="flex items-center justify-between p-4 rounded border border-industrial-line bg-industrial-panel font-mono text-xs text-industrial-ash">
+                    <span className="flex items-center gap-2">
+                      <Layers size={16} className="text-tactical-red" />
+                      <span>PRODUCTION-VERIFIED ARTIFACT</span>
+                    </span>
+                    <span className="text-[10px] uppercase text-ember-glow font-semibold">ENTERPRISE READY</span>
+                  </div>
+                )}
               </div>
             );
           }

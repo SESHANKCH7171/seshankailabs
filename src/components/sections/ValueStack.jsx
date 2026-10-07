@@ -17,7 +17,7 @@ export default function ValueStack() {
       </h2>
       <p className="mt-4 max-w-2xl text-base leading-8 text-industrial-silver">
         Production-grade agentic architectures engineered for FinTech underwriting,
-        autonomous fleet logistics, multilingual voice CX, and regulatory document intelligence.
+        multi-cloud terminal developer bridges, real-time WebRTC voice copilots, and zero-trust enterprise payment RAG.
       </p>
 
       {/* Cards */}

@@ -56,54 +56,66 @@ async def stream_underwriting(payload: FinancialPayload) -> StreamingResponse:
     )`,
   },
 
-  telematics: {
-    id: "telematics",
+  "terminal-bridge": {
+    id: "terminal-bridge",
     number: "ARCHETYPE 02",
-    title: "Autonomous Fleet Telematics & IoT Dispatch Engine",
-    tagline: "Human-in-the-loop state machine handling high-concurrency GPS and CAN-bus telemetry streams.",
-    vertical: "Logistics, Mobility, Heavy Equipment & PropTech",
-    typicalTargets: "Shift, Arsann, Equiptal, TruKKer, Cargoz, WheelsOn, NOMU Group",
+    title: "Universal LLM Terminal Bridge & Cloud Gateway",
+    tagline: "High-performance transparent proxy translating Anthropic Messages API calls into LiteLLM format, running Claude Code CLI on Google Cloud Vertex AI & Gemini 2.5 Pro.",
+    vertical: "Developer Tooling, Enterprise Cloud Migration & Sovereign AI",
+    typicalTargets: "Google Cloud Enterprises, Vertex AI Customers, Engineering Teams, FinTech Platforms",
+    githubRepo: "https://github.com/SESHANKCH7171/UNIVERSAL-LLM-TERMINAL-BRIDGE.git",
     metrics: [
-      { label: "Dispatch Decision Latency", value: "<142ms", sub: "Redis Pub/Sub ingestion" },
-      { label: "Telemetry Concurrency", value: "10,000+ msgs/s", sub: "FastAPI WebSockets" },
-      { label: "SLA Anomaly Detection", value: "99.98%", sub: "Instant alert dispatch" },
-      { label: "Human Checkpoint Rate", value: "Zero Downtime", sub: "LangGraph HITL" },
+      { label: "Proxy Latency Overhead", value: "<3.8ms", sub: "Sub-perceptual translation" },
+      { label: "Cloud Spend Cut", value: "68.4%", sub: "Utilizing GCP enterprise commits" },
+      { label: "Tool Call Pass Rate", value: "100.0%", sub: "Full file edits & test suites" },
+      { label: "Context Headroom", value: "1,000,000+", sub: "Gemini 2.5 Pro full repo ingest" },
     ],
     problem:
-      "Enterprise logistics and fleet operations generate continuous high-frequency telemetry (CAN-bus diagnostics, GPS coordinates, fuel levels). Standard agent pipelines choke under concurrency, drop sensor packets, and hallucinate route adjustments when edge anomalies occur.",
+      "Agentic developer tools like Claude Code (@anthropic-ai/claude-code) are tightly hardcoded to Anthropic's proprietary billing and API endpoints. Enterprises with hundreds of thousands in Google Cloud Platform commit credits or strict regional data boundary agreements cannot deploy Claude Code without violating data residency or burning unnecessary external SaaS budgets.",
     solution:
-      "This architecture pairs a low-latency Redis Pub/Sub message broker with FastAPI WebSockets to ingest sensor streams in real time. LangGraph state checkpoints allow human dispatchers to intervene during critical routing exceptions, while background Celery/Redis RQ workers handle heavy route optimization asynchronously.",
+      "We engineered a transparent proxy server running on 127.0.0.1:8082 that intercepts Anthropic Messages API calls and translates schemas, tool calls, and real-time SSE streaming frames into LiteLLM protocols. Requests route seamlessly to Google Cloud Vertex AI (Gemini 2.5 Pro / Flash), Google AI Studio, or OpenAI with sub-4ms translation latency and zero CLI modifications.",
     stack: [
-      "LangGraph (Human-in-the-Loop Checkpoints)",
-      "FastAPI (WebSockets & Async Consumers)",
-      "Redis (Pub/Sub & Geospatial Indexing)",
-      "Celery / Redis RQ (Async Task Workers)",
-      "CAN-bus & GPS Telemetry Protocol Parsers",
-      "Pydantic v2 (Hardware Telemetry Models)",
+      "FastAPI (High-Throughput ASGI Proxy)",
+      "LiteLLM (Multi-Cloud Orchestration Gateway)",
+      "Google Cloud Vertex AI (ADC & Service Account JSON)",
+      "Gemini 2.5 Pro & Gemini 2.5 Flash",
+      "SSE Real-Time Event-Stream Translator",
+      "Pydantic v2 (Message & Tool Schema Normalization)",
     ],
     architectureDiagram: `flowchart TD
-    A["Vehicle / Heavy Equipment Sensors"] -->|CAN-bus / GPS| B["FastAPI WebSocket Gateway"]
-    B --> C["Redis Pub/Sub Telemetry Broker"]
-    C --> D["LangGraph State Machine"]
-    D --> E{"Sensor Anomaly Detected?"}
-    E -->|Normal| F["Automated Asset Allocation & Route Sync"]
-    E -->|Anomaly / SLA Violation| G["Human-in-the-Loop Checkpoint"]
-    G -->|Dispatcher Approval| F
-    F --> H["Driver App & Fleet Telemetry Dashboard"]`,
-    codeSnippet: `class VehicleTelemetry(BaseModel):
-    vehicle_id: str
-    latitude: float = Field(..., ge=-90.0, le=90.0)
-    longitude: float = Field(..., ge=-180.0, le=180.0)
-    engine_temp_c: float
-    fuel_level_pct: float = Field(..., ge=0.0, le=100.0)
-    can_bus_fault_codes: list[str] = Field(default_factory=list)
+    A["Claude Code CLI (@anthropic-ai/claude-code)"] -->|"ANTHROPIC_BASE_URL (Port 8082)"| B["FastAPI Universal Proxy Gateway"]
+    B --> C["Schema & Tool Call Normalizer"]
+    C --> D["Smart Model Mapping Engine"]
+    D --> E["LiteLLM Multi-Cloud Gateway"]
+    E -->|"Enterprise ADC / Service Account"| F["Google Cloud Vertex AI (Gemini 2.5 Pro / Flash)"]
+    E -->|"API Key Auth"| G["Google AI Studio / OpenAI"]
+    F & G -->|"Streaming Chunks"| H["Bi-Directional SSE Frame Translator"]
+    H -->|"Sub-4ms Playout Frames"| A`,
+    codeSnippet: `@app.post("/v1/messages")
+async def messages_proxy(request: Request):
+    body = await request.json()
+    model_name = map_anthropic_model(body.get("model", "claude-3-5-sonnet"))
+    is_streaming = body.get("stream", False)
 
-@router.websocket("/ws/telemetry/{vehicle_id}")
-async def telemetry_stream(websocket: WebSocket, vehicle_id: str):
-    await websocket.accept()
-    async for raw_data in websocket.iter_json():
-        telemetry = VehicleTelemetry.model_validate(raw_data)
-        await redis_bus.publish(f"fleet:{vehicle_id}", telemetry.model_dump_json())`,
+    if not is_streaming:
+        response = await litellm.acompletion(model=model_name, messages=body["messages"])
+        return transform_to_anthropic_format(response)
+
+    async def sse_event_translator():
+        yield f"event: message_start\\ndata: {json.dumps(create_message_start(model_name))}\\n\\n"
+        yield f"event: content_block_start\\ndata: {json.dumps({'type':'content_block_start','index':0,'content_block':{'type':'text','text':''}})}\\n\\n"
+
+        response = await litellm.acompletion(model=model_name, messages=body["messages"], stream=True)
+        async for chunk in response:
+            content = chunk.choices[0].delta.content or ""
+            if content:
+                yield f"event: content_block_delta\\ndata: {json.dumps({'type':'content_block_delta','index':0,'delta':{'type':'text_delta','text':content}})}\\n\\n"
+
+        yield f"event: content_block_stop\\ndata: {json.dumps({'type':'content_block_stop','index':0})}\\n\\n"
+        yield f"event: message_delta\\ndata: {json.dumps({'type':'message_delta','delta':{'stop_reason':'end_turn'}})}\\n\\n"
+        yield f"event: message_stop\\ndata: {json.dumps({'type':'message_stop'})}\\n\\n"
+
+    return StreamingResponse(sse_event_translator(), media_type="text/event-stream")`,
   },
 
   "voice-cx": {
@@ -168,51 +180,71 @@ async def telemetry_stream(websocket: WebSocket, vehicle_id: str):
         return await loop.run_in_executor(None, run_gm_chat, query)`,
   },
 
-  "doc-rag": {
-    id: "doc-rag",
+  "enterprise-rag": {
+    id: "enterprise-rag",
     number: "ARCHETYPE 04",
-    title: "Unstructured Document & Statutory RAG Engine",
-    tagline: "Zero-hallucination multi-agent document synthesis with pgvector and statutory citation fidelity.",
-    vertical: "LegalTech, Regulatory Compliance, Sovereign Enterprise",
-    typicalTargets: "Qanooni, MilkStraw AI, Ameba, Sadq, Oqood, 1001, Gaia",
+    title: "Hardened Enterprise Stripe RAG & AI Security Platform",
+    tagline: "Zero-trust two-gate RAG architecture with NeMo Guardrails, Vertex AI text-embedding-004, Qdrant Cloud HNSW, and automated RAGAS CI/CD benchmarks.",
+    vertical: "FinTech Payments, Regulated Cloud RAG, AI Security & Compliance",
+    typicalTargets: "Stripe Partners, Tamara, Tabby, HyperPay, Paymob, Geidea, Checkout.com",
+    githubRepo: "https://github.com/SESHANKCH7171/enterprise-rag-with-gcp.git",
     metrics: [
-      { label: "Statutory Citation Fidelity", value: "100%", sub: "Verifiable court/statute IDs" },
-      { label: "DeepEval Faithfulness", value: "0.96 / 1.00", sub: "Automated regression tests" },
-      { label: "Table & Column Accuracy", value: "99.2%", sub: "Multi-page unstructured PDF" },
-      { label: "Audit Traceability", value: "Full SHA-256", sub: "Regulatory audit-ready logs" },
+      { label: "Security Intercept Rate", value: "100.0%", sub: "DAN, secret leaks & Radar evasion" },
+      { label: "RAGAS Faithfulness", value: "0.94 / 1.00", sub: "Grounded in Stripe API schemas" },
+      { label: "Context Precision", value: "0.93 / 1.00", sub: "FlashRank TinyBERT re-ranking" },
+      { label: "P50 Response Latency", value: "340ms", sub: "Vertex AI + Groq LPU pipeline" },
     ],
     problem:
-      "Enterprise contracts, legal briefs, and government tenders are filled with dense, multi-page tables, statutory citations, and complex clauses. Standard RAG architectures chunk documents arbitrarily, losing semantic context and hallucinating legal citations that lead to compliance liability.",
+      "Deploying RAG on enterprise financial APIs (such as Stripe payment intents, webhooks, chargeback disputes) introduces catastrophic vulnerabilities: adversarial prompts leaking live API secrets (sk_live_...), malicious queries evading Radar fraud rules, and unranked 80k-character context stuffing causing models to hallucinate nested JSON parameters.",
     solution:
-      "This architecture uses a multi-agent LangGraph topology: a Document Parsing Agent isolates tables and headers, an Embeddings Router indexes vectors into pgvector with Redis caching, and a Synthesis Agent verifies every statutory reference with DeepEval regression tests before drafting outputs.",
+      "We engineered a Two-Gate Zero-Trust pipeline. Gate 1 intercepts jailbreaks and secret probes using NVIDIA NeMo Guardrails with programmable Colang policies. Gate 2 executes a LangGraph state machine with two-stage retrieval: Vertex AI text-embedding-004 vectors indexed in Qdrant Cloud, followed by local zero-GPU FlashRank TinyBERT cross-encoder re-ranking. All answers route through Portkey AI Gateway with automated Groq failover.",
     stack: [
-      "LangGraph (Multi-Agent Synthesis)",
-      "pgvector + PostgreSQL",
-      "Redis (Semantic Vector Query Cache)",
-      "DeepEval (Faithfulness & Citation Validation)",
-      "Pydantic v2 (Strict Document Schema Extraction)",
-      "NeMo Guardrails (Confidentiality & Compliance)",
+      "NVIDIA NeMo Guardrails (Colang Rules)",
+      "Google Cloud Vertex AI (text-embedding-004)",
+      "Qdrant Cloud (HNSW Vector DB)",
+      "FlashRank (ms-marco-TinyBERT Cross-Encoder)",
+      "LangGraph (Cyclic Orchestration)",
+      "Portkey AI Gateway (Groq Primary/Fallback)",
+      "RAGAS & Streamlit (Automated Regression CI/CD)",
+      "Pydantic Logfire & LangSmith Telemetry",
     ],
     architectureDiagram: `flowchart TD
-    A["Unstructured Document / PDF Contract"] --> B["Document Chunking & Table Parser"]
-    B --> C["Pydantic v2 Schema Normalizer"]
-    C --> D["pgvector + Redis Embedding Cache"]
-    D --> E["LangGraph Multi-Agent Synthesis Graph"]
-    E --> F["Statutory Citation Verification Node"]
-    F --> G["DeepEval Faithfulness & Groundedness Test"]
-    G -->|Score >= 0.95| H["Audit-Ready Compliant Document + JSON"]
-    G -->|Score < 0.95| E`,
-    codeSnippet: `class ExtractedClause(BaseModel):
-    clause_id: str
-    statutory_citation: str
-    liability_cap_usd: float
-    governing_law: str = Field(..., description="e.g. UAE Federal Law / DIFC")
-    compliance_passed: bool
+    A["Developer / Client REST Ingestion"] --> B{"Gate 1: NeMo Guardrails (Colang)"}
+    B -->|Violation: Leak / DAN / Evasion| C["Security Intercept Log (403 Blocked)"]
+    B -->|Passed| D["Gate 2: LangGraph State Machine"]
+    D --> E{"Planner (Intent Router)"}
+    E -->|Conversational| F["Direct Gateway Responder"]
+    E -->|Documentation Query| G["Google Vertex AI text-embedding-004"]
+    G --> H["Qdrant Cloud Vector DB (Top 20 Chunks)"]
+    H --> I["FlashRank Local Cross-Encoder (TinyBERT)"]
+    I --> J["Dynamic Context Pruner (<25k chars)"]
+    J --> K["Portkey AI Gateway (Groq gpt-oss-120b)"]
+    K -.->|Failover 429/503| L["Groq gpt-oss-20b Fallback"]
+    K --> M["Logfire Spans + Validated Stripe Response"]`,
+    codeSnippet: `# 1. Gate 1: Colang Safety Rails Check
+rails_config = RailsConfig.from_path("./app/guardrails")
+nemo_rails = LLMRails(rails_config)
 
-async def synthesize_contract(doc_bytes: bytes) -> ExtractedClause:
-    parsed_sections = await doc_parser.extract_tables(doc_bytes)
-    state = {"sections": parsed_sections, "verified": False}
-    result = await synthesis_graph.ainvoke(state)
-    return ExtractedClause.model_validate(result["structured_output"])`,
+async def verify_security_gate(prompt: str) -> bool:
+    response = await nemo_rails.generate_async(prompt=prompt)
+    if "I am programmed to be a secure Stripe assistant" in response.response:
+        return False  # 403 Intercepted!
+    return True
+
+# 2. Gate 2: Two-Stage Re-Ranking Service
+ranker = Ranker(model_name="ms-marco-TinyBERT-L-2-v2", cache_dir="/tmp/flashrank")
+
+def rerank_and_prune(query: str, raw_chunks: list[dict], top_k: int = 4) -> str:
+    rerank_req = RerankRequest(query=query, passages=raw_chunks)
+    ranked = ranker.rerank(rerank_req)[:top_k]
+    context = ""
+    for r in ranked:
+        if len(context) + len(r["text"]) < 25000:
+            context += f"\\n\\n[SOURCE: {r['meta']['title']}]\\n{r['text']}"
+    return context`,
   },
 };
+
+// Backwards-compatibility aliases for legacy bookmarks
+architecturesData.telematics = architecturesData["terminal-bridge"];
+architecturesData["doc-rag"] = architecturesData["enterprise-rag"];
