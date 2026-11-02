@@ -64,9 +64,9 @@ export default function TacticalChatbot() {
         })
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
-      if (response.ok && data.answer) {
+      if (data && data.answer) {
         setMessages([...newMessages, { 
           role: "assistant", 
           content: data.answer, 
@@ -75,15 +75,15 @@ export default function TacticalChatbot() {
       } else {
         setMessages([...newMessages, { 
           role: "assistant", 
-          content: data.answer || data.error || "System encountered an error. Please schedule directly via Calendly.", 
-          isError: true 
+          content: "Our systems are experiencing peak inquiry volume. To discuss your enterprise agent architecture, RAG security, or voice copilot requirements directly, please book a 20-min session with Seshank here: https://calendly.com/seshankch7171/30min or email seshank@seshankailabs.com", 
+          provider: "direct_booking" 
         }]);
       }
     } catch (err) {
       setMessages([...newMessages, { 
         role: "assistant", 
-        content: "Network error connecting to API. You can book directly with Seshank here: https://calendly.com/seshankch7171/30min",
-        isError: true 
+        content: "Our systems are experiencing peak inquiry volume. To discuss your enterprise agent architecture, RAG security, or voice copilot requirements directly, please book a 20-min session with Seshank here: https://calendly.com/seshankch7171/30min or email seshank@seshankailabs.com",
+        provider: "direct_booking" 
       }]);
     } finally {
       setIsLoading(false);

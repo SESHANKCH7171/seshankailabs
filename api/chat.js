@@ -1,57 +1,65 @@
 import siteKnowledge from '../site_knowledge.json' with { type: 'json' };
 
-// Simple in-memory IP rate limiter (prevents spam bombing on free keys)
-const ipRateMap = new Map();
-const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
-const MAX_REQUESTS_PER_WINDOW = 8; // Max 8 requests/min per IP
+// Normalize messages so conversation ALWAYS starts with 'user' and alternates cleanly
+function sanitizeMessages(rawMessages) {
+  if (!Array.isArray(rawMessages)) return [];
 
-function isRateLimited(ip) {
-  const now = Date.now();
-  const record = ipRateMap.get(ip) || { count: 0, resetTime: now + RATE_LIMIT_WINDOW_MS };
+  // 1. Keep only 'user' and 'assistant' roles with non-empty text
+  const filtered = rawMessages
+    .filter(m => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim().length > 0)
+    .map(m => ({ role: m.role, content: m.content.trim() }));
 
-  if (now > record.resetTime) {
-    record.count = 1;
-    record.resetTime = now + RATE_LIMIT_WINDOW_MS;
-    ipRateMap.set(ip, record);
-    return false;
+  // 2. Find first 'user' message index (discard any initial assistant greetings)
+  const firstUserIdx = filtered.findIndex(m => m.role === 'user');
+  if (firstUserIdx === -1) return [];
+
+  const fromFirstUser = filtered.slice(firstUserIdx);
+
+  // 3. Ensure strict alternating sequence (user -> assistant -> user)
+  const sanitized = [];
+  for (const msg of fromFirstUser) {
+    if (sanitized.length === 0) {
+      sanitized.push(msg);
+    } else {
+      const prev = sanitized[sanitized.length - 1];
+      if (prev.role === msg.role) {
+        // Merge consecutive same-role contents
+        prev.content += `\n${msg.content}`;
+      } else {
+        sanitized.push(msg);
+      }
+    }
   }
 
-  record.count += 1;
-  ipRateMap.set(ip, record);
-  return record.count > MAX_REQUESTS_PER_WINDOW;
+  // 4. Sliding window: keep max last 6 turns
+  return sanitized.slice(-6);
 }
 
-// Clean up stale IP records every 5 minutes
-if (typeof setInterval !== 'undefined') {
-  setInterval(() => {
-    const now = Date.now();
-    for (const [ip, data] of ipRateMap.entries()) {
-      if (now > data.resetTime) ipRateMap.delete(ip);
-    }
-  }, 5 * 60 * 1000);
-}
-
-// Strict system prompt grounded in real Seshank AI Labs architectures
 const SYSTEM_PROMPT = `
 You are the Technical AI Assistant for Seshank AI Labs.
-Founder: Seshank (AI Agent Systems Architect, GCC & UK Corridor).
+Founder: Seshank (AI Agent Systems Architect · GCC & UK Corridor).
 
-Core Specializations & Production Archetypes:
-1. Enterprise RAG & AI Security: Two-gate zero-trust architecture combining NVIDIA NeMo Guardrails (Colang), Vertex AI text-embedding-004, Qdrant Cloud HNSW, FlashRank TinyBERT cross-encoder re-ranking, and automated RAGAS CI/CD. 100% PyRIT attacks and API secret leaks blocked.
-2. Real-Time WebRTC Voice Agents: 891ms TTFT multimodal voice copilot powered by LiveKit Cloud WebRTC, Groq LPUs (gpt-oss-20b + Whisper Large V3), Deepgram Aura-2 neural voice, and LangGraph anomaly engines with zero hallucination.
-3. Universal LLM Gateways & Model Routing: High-throughput transparent FastAPI proxy translating Anthropic Messages API into LiteLLM, running Claude Code CLI natively on Google Cloud Vertex AI (Gemini 2.5 Pro / Flash) with <3.8ms overhead and 68.4% cloud savings.
-4. Deterministic Multi-Agent State Machines: Cyclic LangGraph workflows with strict Pydantic v2 byte validation, sub-200ms latency, and 42ms Redis semantic caching.
+STRICT WEBSITE KNOWLEDGE BASE:
+1. Archetype 01: Deterministic Financial & Risk Underwriting State Machine
+   - Cyclic LangGraph state machine, Pydantic v2 byte validation, sub-200ms latency, 42ms Redis semantic cache, DeepEval score 0.97/1.00.
+2. Archetype 02: Universal LLM Terminal Bridge & Cloud Gateway
+   - Transparent FastAPI proxy translating Anthropic Messages API into LiteLLM, running Claude Code CLI natively on Google Cloud Vertex AI & Gemini 2.5 Pro with <3.8ms overhead and 68.4% cloud spend savings.
+3. Archetype 03: Real-Time WebRTC Voice Copilot
+   - 891ms TTFT multimodal voice pipeline (LiveKit Cloud, Groq Whisper V3, Deepgram Aura-2, LangGraph anomaly state engine, 100% deterministic grounding).
+4. Archetype 04: Hardened Enterprise Stripe RAG & AI Security Platform
+   - Two-gate zero-trust architecture (NVIDIA NeMo Guardrails Colang, GCP Vertex AI text-embedding-004, Qdrant Cloud HNSW, FlashRank TinyBERT cross-encoder, 100% PyRIT attacks and API secret leaks blocked).
 
 STRICT OPERATING RULES:
-1. Keep answers SHORT and direct: Under 60-80 words (2 to 3 sentences max).
-2. Talk technically and accurately about RAG, AI Security, Voice copilots, Model routing, and LangGraph state machines.
-3. No generic corporate AI hype (never say 'revolutionize', 'disruptive', 'cutting-edge').
-4. When asked about working together, consulting, code audits, or architectures, provide the direct Calendly link:
-   "You can book a 20-min technical discovery call directly with Seshank here: https://calendly.com/seshankch7171/30min or email seshank@seshankailabs.com"
+1. ONLY answer questions about Seshank AI Labs' architectures, telemetry benchmarks, and engineering capabilities.
+2. If the user asks about unrelated topics (e.g. general sales tricks, cold outreach, generic chat), politely redirect:
+   "Seshank AI Labs specializes in engineering deterministic AI agent systems, hardened enterprise RAG, and WebRTC voice copilots. To discuss how our architectures apply to your platform, schedule a 20-min call with Seshank: https://calendly.com/seshankch7171/30min"
+3. Keep answers concise: Under 60 words (2-3 sentences max). No corporate buzzwords.
+4. Always provide the Calendly link when discussing collaboration or custom builds:
+   https://calendly.com/seshankch7171/30min
 `;
 
-// 1. Primary: Call Groq API
-async function callGroq(messages) {
+// Helper: Groq API Call
+async function callGroq(messages, modelName = 'llama-3.3-70b-versatile') {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error('GROQ_API_KEY_NOT_SET');
 
@@ -62,7 +70,7 @@ async function callGroq(messages) {
       'Authorization': `Bearer ${apiKey}`
     },
     body: JSON.stringify({
-      model: 'openai/gpt-oss-20b',
+      model: modelName,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         ...messages
@@ -74,27 +82,29 @@ async function callGroq(messages) {
 
   if (!response.ok) {
     const errText = await response.text();
-    const error = new Error(`Groq Error ${response.status}: ${errText}`);
+    const error = new Error(`Groq ${modelName} Error ${response.status}: ${errText}`);
     error.status = response.status;
     throw error;
   }
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content?.trim();
+  const reply = data.choices?.[0]?.message?.content?.trim();
+  if (!reply) throw new Error('Empty response from Groq');
+  return reply;
 }
 
-// 2. Failover: Call Google Gemini API
-async function callGemini(messages) {
+// Helper: Gemini API Call
+async function callGemini(messages, modelName = 'gemini-1.5-flash') {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY_NOT_SET');
 
-  // Convert chat messages to Gemini's format
-  const geminiContents = messages.map(m => ({
+  // Gemini contents MUST start with user and strictly alternate
+  const contents = messages.map(m => ({
     role: m.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: m.content }]
   }));
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -103,7 +113,7 @@ async function callGemini(messages) {
       systemInstruction: {
         parts: [{ text: SYSTEM_PROMPT }]
       },
-      contents: geminiContents,
+      contents: contents,
       generationConfig: {
         maxOutputTokens: 220,
         temperature: 0.2
@@ -112,38 +122,20 @@ async function callGemini(messages) {
   });
 
   if (!response.ok) {
-    // If 2.5-flash not found or blocked, try gemini-1.5-flash
-    const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-    const fallbackRes = await fetch(fallbackUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: {
-          parts: [{ text: SYSTEM_PROMPT }]
-        },
-        contents: geminiContents,
-        generationConfig: {
-          maxOutputTokens: 220,
-          temperature: 0.2
-        }
-      })
-    });
-
-    if (!fallbackRes.ok) {
-      const errText = await fallbackRes.text();
-      throw new Error(`Gemini Error ${fallbackRes.status}: ${errText}`);
-    }
-
-    const fbData = await fallbackRes.json();
-    return fbData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    const errText = await response.text();
+    const error = new Error(`Gemini ${modelName} Error ${response.status}: ${errText}`);
+    error.status = response.status;
+    throw error;
   }
 
   const data = await response.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+  const reply = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+  if (!reply) throw new Error('Empty response from Gemini');
+  return reply;
 }
 
 export default async function handler(req, res) {
-  // CORS & Methods
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -156,45 +148,49 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // 1. IP Rate Limiting Check
-  const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'anonymous';
-  if (isRateLimited(ip)) {
-    return res.status(429).json({
-      error: 'Too many messages sent. Please pause for 1 minute before asking again.'
-    });
-  }
+  const { messages: rawMessages } = req.body || {};
+  const cleanMessages = sanitizeMessages(rawMessages);
 
-  const { messages } = req.body || {};
-
-  if (!Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ error: 'Valid messages array is required.' });
-  }
-
-  // 2. Sliding Window: Only keep last 6 messages (3 turns) to protect token budget
-  const trimmedMessages = messages.slice(-6);
-
-  // 3. Routing Engine: Groq Primary -> Gemini Failover
-  try {
-    const answer = await callGroq(trimmedMessages);
+  if (cleanMessages.length === 0) {
     return res.status(200).json({
-      answer,
-      provider: 'groq'
+      answer: "I am ready to assist. Ask about our Enterprise RAG architectures, NeMo Guardrails, WebRTC Voice Copilots, or schedule a technical call: https://calendly.com/seshankch7171/30min",
+      provider: 'programmed_fallback'
     });
-  } catch (groqErr) {
-    console.warn('[Router] Groq failed, switching to Gemini failover:', groqErr.message);
+  }
 
+  // Multi-tier Waterfall Routing:
+  // Tier 1: Groq Llama 3.3 70B (High Intelligence)
+  // Tier 2: Groq Llama 3.1 8B (14,400 RPD backup - ultra fast)
+  // Tier 3: Gemini 1.5 Flash (1,000,000 TPM backup)
+  // Tier 4: Programmed Deterministic Calendly Response (Zero 500 errors)
+
+  // 1. Try Groq Primary (Llama 3.3 70B or gpt-oss-20b)
+  try {
+    const answer = await callGroq(cleanMessages, 'llama-3.3-70b-versatile');
+    return res.status(200).json({ answer, provider: 'groq' });
+  } catch (groqPrimaryErr) {
+    console.warn('[Router] Groq Tier 1 failed:', groqPrimaryErr.message);
+
+    // 2. Try Groq Tier 2 (Llama 3.1 8B - ultra-high daily quota)
     try {
-      const geminiAnswer = await callGemini(trimmedMessages);
-      return res.status(200).json({
-        answer: geminiAnswer,
-        provider: 'gemini'
-      });
-    } catch (geminiErr) {
-      console.error('[Router] Both Groq and Gemini failed:', geminiErr.message);
-      return res.status(503).json({
-        answer: "Our systems are experiencing high traffic. For immediate technical consultations, please book directly at https://calendly.com/seshankch7171/30min or email seshank@seshankailabs.com",
-        provider: 'static_fallback'
-      });
+      const answer = await callGroq(cleanMessages, 'llama-3.1-8b-instant');
+      return res.status(200).json({ answer, provider: 'groq-8b' });
+    } catch (groqBackupErr) {
+      console.warn('[Router] Groq Tier 2 failed:', groqBackupErr.message);
+
+      // 3. Try Gemini Failover (Gemini 1.5 Flash - 1M TPM buffer)
+      try {
+        const answer = await callGemini(cleanMessages, 'gemini-1.5-flash');
+        return res.status(200).json({ answer, provider: 'gemini' });
+      } catch (geminiErr) {
+        console.warn('[Router] Gemini Tier 3 failed:', geminiErr.message);
+
+        // 4. Deterministic Programmed Conversion Response (Never crash)
+        return res.status(200).json({
+          answer: "Our systems are experiencing peak inquiry volume. To discuss your enterprise agent architecture, RAG security, or voice copilot requirements directly, please book a 20-min session with Seshank here: https://calendly.com/seshankch7171/30min or email seshank@seshankailabs.com",
+          provider: 'direct_booking'
+        });
+      }
     }
   }
 }
