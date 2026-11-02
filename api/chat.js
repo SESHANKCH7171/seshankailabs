@@ -59,7 +59,7 @@ STRICT OPERATING RULES:
 `;
 
 // Helper: Groq API Call
-async function callGroq(messages, modelName = 'llama-3.3-70b-versatile') {
+async function callGroq(messages, modelName = 'openai/gpt-oss-20b') {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error('GROQ_API_KEY_NOT_SET');
 
@@ -94,7 +94,7 @@ async function callGroq(messages, modelName = 'llama-3.3-70b-versatile') {
 }
 
 // Helper: Gemini API Call
-async function callGemini(messages, modelName = 'gemini-1.5-flash') {
+async function callGemini(messages, modelName = 'gemini-3.5-flash-lite') {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY_NOT_SET');
 
@@ -166,7 +166,7 @@ export default async function handler(req, res) {
 
   // 1. Try Groq Primary (Llama 3.3 70B or gpt-oss-20b)
   try {
-    const answer = await callGroq(cleanMessages, 'llama-3.3-70b-versatile');
+    const answer = await callGroq(cleanMessages, 'openai/gpt-oss-20b');
     return res.status(200).json({ answer, provider: 'groq' });
   } catch (groqPrimaryErr) {
     console.warn('[Router] Groq Tier 1 failed:', groqPrimaryErr.message);
@@ -180,7 +180,7 @@ export default async function handler(req, res) {
 
       // 3. Try Gemini Failover (Gemini 1.5 Flash - 1M TPM buffer)
       try {
-        const answer = await callGemini(cleanMessages, 'gemini-1.5-flash');
+        const answer = await callGemini(cleanMessages, 'gemini-3.5-flash-lite');
         return res.status(200).json({ answer, provider: 'gemini' });
       } catch (geminiErr) {
         console.warn('[Router] Gemini Tier 3 failed:', geminiErr.message);
