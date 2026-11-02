@@ -15,15 +15,15 @@ import {
 } from "lucide-react";
 
 const QUICK_PROMPTS = [
-  "How do you automate AS9100 compliance?",
-  "Can you parse multi-hundred-page defense tenders?",
-  "What agent architectures do you build?",
+  "How does your Hardened Enterprise RAG work?",
+  "How does Terminal Bridge run Claude Code on Vertex AI?",
+  "How do you achieve 891ms latency on WebRTC Voice?",
   "Book a 20-min technical discovery call"
 ];
 
 const INITIAL_MESSAGE = {
   role: "assistant",
-  content: "Systems online. I am the Seshank AI Labs technical assistant. Ask about our defense AI agent architectures, compliance pipelines, or book a consultation with Seshank.",
+  content: "Systems online. I am the Seshank AI Labs technical assistant. Ask about our Enterprise RAG architectures, NeMo Guardrails, WebRTC Voice Copilots, or book a consultation with Seshank.",
   provider: "system"
 };
 
@@ -211,7 +211,7 @@ export default function TacticalChatbot() {
                 </div>
                 <div className="flex items-center gap-1.5 font-mono text-[10px] text-industrial-ash">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>ONLINE // AEROSPACE &amp; DEFENSE</span>
+                  <span>ONLINE // AI AGENT SYSTEMS ARCHITECT</span>
                 </div>
               </div>
             </div>
@@ -314,7 +314,7 @@ export default function TacticalChatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask about defense AI architectures..."
+                placeholder="Ask about Enterprise RAG, Voice AI, or Model Routing..."
                 className="flex-1 rounded border border-industrial-line bg-stealth-black px-3 py-2 font-mono text-xs text-white placeholder-industrial-ash focus:border-tactical-red focus:outline-none transition-colors"
                 disabled={isLoading}
               />

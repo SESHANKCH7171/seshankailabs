@@ -1,29 +1,56 @@
 {
   "organization": "Seshank AI Labs",
   "founder": "Seshank (AI Agent Systems Architect)",
-  "domain": "B2B Aerospace & Defense in India, GCC & UK Corridor",
-  "targetEcosystems": [
-    "Nashik manufacturing corridor",
-    "HAL Ozar",
-    "MIDC Satpur / Ambad ecosystem"
+  "positioning": "AI Agent Systems Architect · GCC & UK Corridor",
+  "coreSpecializations": [
+    "Hardened Enterprise RAG & Two-Stage Re-ranking (Vertex AI, Qdrant Cloud, FlashRank TinyBERT, RAGAS)",
+    "AI Security, Guardrails & Adversarial Testing (NVIDIA NeMo Guardrails, Colang, Microsoft PyRIT 100% blocked)",
+    "Real-Time Multimodal WebRTC Voice Agents (LiveKit Cloud, Groq Whisper V3, Deepgram Aura-2, 891ms TTFT)",
+    "Universal LLM Gateways & Model Routing (FastAPI proxy running Claude Code on GCP Vertex AI & Gemini 2.5 Pro)",
+    "Deterministic Multi-Agent State Machines (LangGraph cyclic workflows, Pydantic v2 byte validation, Redis semantic caching)"
   ],
-  "focusProblems": [
-    "AS9100 and military-spec compliance document automation and audit readiness",
-    "Defense RFP and multi-hundred-page technical tender parsing with cross-clause verification",
-    "Supply chain traceability and defense vendor qualification workflows"
+  "productionArchitectures": [
+    {
+      "id": "fintech",
+      "number": "ARCHETYPE 01",
+      "title": "Deterministic Financial & Risk Underwriting State Machine",
+      "stack": ["LangGraph", "FastAPI SSE", "Redis Semantic Cache", "NeMo Guardrails", "Pydantic v2", "DeepEval"],
+      "metrics": "<168ms execution latency, 0.97 DeepEval faithfulness, 0.00% schema drift, SAMA/CBUAE audit compliance."
+    },
+    {
+      "id": "terminal-bridge",
+      "number": "ARCHETYPE 02",
+      "title": "Universal LLM Terminal Bridge & Cloud Gateway",
+      "stack": ["FastAPI ASGI Proxy", "LiteLLM", "Google Cloud Vertex AI", "Gemini 2.5 Pro / Flash", "Anthropic Messages Protocol"],
+      "metrics": "<3.8ms proxy overhead, 68.4% cloud spend reduction using GCP credits, 100% tool call pass rate, 1M+ context window.",
+      "github": "https://github.com/SESHANKCH7171/UNIVERSAL-LLM-TERMINAL-BRIDGE.git"
+    },
+    {
+      "id": "voice-cx",
+      "number": "ARCHETYPE 03",
+      "title": "Real-Time WebRTC Voice Copilot & LangGraph Anomaly State Engine",
+      "stack": ["LiveKit Cloud WebRTC", "Groq LPU (gpt-oss-20b + Whisper Large V3)", "Deepgram Aura-2 TTS", "Silero VAD", "LangGraph"],
+      "metrics": "891ms TTFT, <100ms TTS audio first byte, 100% deterministic anomaly grounding, zero audio hallucination.",
+      "github": "https://github.com/SESHANKCH7171/hotel-gm-system-3.0.git"
+    },
+    {
+      "id": "enterprise-rag",
+      "number": "ARCHETYPE 04",
+      "title": "Hardened Enterprise Stripe RAG & AI Security Platform",
+      "stack": ["NVIDIA NeMo Guardrails (Colang)", "GCP Vertex AI text-embedding-004", "Qdrant Cloud HNSW", "FlashRank TinyBERT Cross-Encoder", "Portkey AI Gateway"],
+      "metrics": "100% PyRIT prompt injection and secret leak block rate, 0.94 RAGAS faithfulness, 340ms P50 latency.",
+      "github": "https://github.com/SESHANKCH7171/enterprise-rag-with-gcp.git"
+    }
   ],
-  "services": [
-    "Enterprise AI Agent Systems Architecture",
-    "Deterministic Document & Compliance Intelligence Pipelines",
-    "Specialist Defense Offset & Verification Systems Consulting"
-  ],
+  "telemetryProof": {
+    "adversarialSecurity": "100% PyRIT attack vectors blocked with zero secret leaks",
+    "cacheSpeed": "42ms Redis semantic cache hit (down from 850ms)",
+    "faithfulness": "0.97 / 1.00 DeepEval score on cyclic state machines",
+    "voiceLatency": "891ms Time-To-First-Token on LiveKit + Groq"
+  },
   "callToAction": {
     "bookingUrl": "https://calendly.com/seshankch7171/30min",
     "email": "seshank@seshankailabs.com",
-    "instruction": "Whenever a user is interested in discussing a project, consultation, or technical architecture, provide the direct Calendly link: https://calendly.com/seshankch7171/30min"
-  },
-  "guardrails": {
-    "maxLength": "Keep answers under 60-80 words (2-3 concise sentences).",
-    "style": "Industrial, technical, grounded, direct. No AI buzzwords like 'revolutionary' or 'cutting-edge'. Always prompt to schedule a call on Calendly."
+    "instruction": "For custom agent architectures, RAG security audits, or voice copilot deployments, schedule a 20-min technical call at https://calendly.com/seshankch7171/30min or email seshank@seshankailabs.com"
   }
 }
