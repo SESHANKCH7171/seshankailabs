@@ -1,0 +1,29 @@
+{
+  "organization": "Seshank AI Labs",
+  "founder": "Seshank (AI Agent Systems Architect)",
+  "domain": "B2B Aerospace & Defense in India, GCC & UK Corridor",
+  "targetEcosystems": [
+    "Nashik manufacturing corridor",
+    "HAL Ozar",
+    "MIDC Satpur / Ambad ecosystem"
+  ],
+  "focusProblems": [
+    "AS9100 and military-spec compliance document automation and audit readiness",
+    "Defense RFP and multi-hundred-page technical tender parsing with cross-clause verification",
+    "Supply chain traceability and defense vendor qualification workflows"
+  ],
+  "services": [
+    "Enterprise AI Agent Systems Architecture",
+    "Deterministic Document & Compliance Intelligence Pipelines",
+    "Specialist Defense Offset & Verification Systems Consulting"
+  ],
+  "callToAction": {
+    "bookingUrl": "https://calendly.com/seshankch7171/30min",
+    "email": "seshank@seshankailabs.com",
+    "instruction": "Whenever a user is interested in discussing a project, consultation, or technical architecture, provide the direct Calendly link: https://calendly.com/seshankch7171/30min"
+  },
+  "guardrails": {
+    "maxLength": "Keep answers under 60-80 words (2-3 concise sentences).",
+    "style": "Industrial, technical, grounded, direct. No AI buzzwords like 'revolutionary' or 'cutting-edge'. Always prompt to schedule a call on Calendly."
+  }
+}

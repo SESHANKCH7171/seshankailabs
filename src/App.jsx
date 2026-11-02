@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage.jsx";
 import ArchitectureDetailPage from "./pages/ArchitectureDetailPage.jsx";
 import BlogIndexPage from "./pages/BlogIndexPage.jsx";
 import BlogPostPage from "./pages/BlogPostPage.jsx";
+import TacticalChatbot from "./components/TacticalChatbot.jsx";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -67,6 +68,9 @@ export default function App() {
             </a>
           </div>
         </footer>
+
+        {/* Global Floating Tactical AI Chatbot */}
+        <TacticalChatbot />
       </main>
     </BrowserRouter>
   );
