@@ -42,6 +42,7 @@ export default function NavBar() {
   const navigate = useNavigate();
 
   const isHome = location.pathname === "/";
+  const isOutbound = location.pathname === "/outbound";
   const isBlog = location.pathname.startsWith("/blog");
   const isArchitecture = location.pathname.startsWith("/architectures");
 
@@ -119,7 +120,7 @@ export default function NavBar() {
                   onClick={() => handleNavClick(s.id)}
                   className={`px-3 py-2 font-mono text-xs uppercase tracking-tactical transition-colors ${
                     activeSection === s.id && !isBlog
-                      ? "text-tactical-red"
+                      ? "text-tactical-red font-semibold"
                       : "text-industrial-ash hover:text-industrial-silver"
                   }`}
                 >
@@ -137,9 +138,18 @@ export default function NavBar() {
                 </Link>
                 <button
                   type="button"
+                  onClick={() => handleNavClick("lead-intelligence")}
+                  className={`px-3 py-2 font-mono text-xs uppercase tracking-tactical transition-colors ${
+                    isOutbound ? "text-tactical-red font-semibold" : "text-industrial-ash hover:text-industrial-silver"
+                  }`}
+                >
+                  B2B LEAD INTEL
+                </button>
+                <button
+                  type="button"
                   onClick={() => handleNavClick("capabilities")}
                   className={`px-3 py-2 font-mono text-xs uppercase tracking-tactical transition-colors ${
-                    isArchitecture ? "text-tactical-red" : "text-industrial-ash hover:text-industrial-silver"
+                    isArchitecture ? "text-tactical-red font-semibold" : "text-industrial-ash hover:text-industrial-silver"
                   }`}
                 >
                   ARCHITECTURES
@@ -203,7 +213,7 @@ export default function NavBar() {
               <X size={22} />
             </button>
           </div>
-          <nav className="flex flex-1 flex-col items-center justify-center gap-7">
+          <nav className="flex flex-1 flex-col items-center justify-center gap-6">
             <Link
               to="/"
               onClick={() => setMobileOpen(false)}
@@ -213,10 +223,17 @@ export default function NavBar() {
             </Link>
             <button
               type="button"
+              onClick={() => handleNavClick("lead-intelligence")}
+              className="font-mono text-lg uppercase tracking-tactical text-tactical-red font-bold"
+            >
+              B2B LEAD INTELLIGENCE
+            </button>
+            <button
+              type="button"
               onClick={() => handleNavClick("capabilities")}
               className="font-mono text-lg uppercase tracking-tactical text-industrial-ash hover:text-tactical-red"
             >
-              ARCHITECTURES
+              AI ARCHITECTURES
             </button>
             <button
               type="button"
@@ -224,6 +241,13 @@ export default function NavBar() {
               className="font-mono text-lg uppercase tracking-tactical text-industrial-ash hover:text-tactical-red"
             >
               TELEMETRY &amp; PROOF
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavClick("about")}
+              className="font-mono text-lg uppercase tracking-tactical text-industrial-ash hover:text-tactical-red"
+            >
+              ABOUT FOUNDER
             </button>
             <Link
               to="/blog"

@@ -1,7 +1,8 @@
 export const sections = [
   { id: "home", label: "Home" },
+  { id: "lead-intelligence", label: "B2B Lead Intelligence" },
   { id: "about", label: "About" },
-  { id: "capabilities", label: "Capabilities" },
+  { id: "capabilities", label: "AI Engineering" },
   { id: "proof", label: "Telemetry & Proof" },
   { id: "contact", label: "Contact" },
 ];

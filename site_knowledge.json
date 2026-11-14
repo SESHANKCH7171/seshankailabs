@@ -1,8 +1,28 @@
 {
   "organization": "Seshank AI Labs",
-  "founder": "Seshank (AI Agent Systems Architect)",
-  "positioning": "AI Agent Systems Architect · GCC & UK Corridor",
+  "founder": "Seshank Chinnapotula (M.Tech Aerospace Engineering, IIT Madras)",
+  "positioning": "B2B Sniper Lead Intelligence & Enterprise AI Agent Systems Architect · GCC & UK Corridor",
+  "pillars": {
+    "pillar1": {
+      "name": "B2B Sniper Lead Intelligence & Technical GTM Research",
+      "summary": "Custom, browser-verified enterprise buyer dossiers with live <30-day buying signals, tool gap audits, and custom 4-touch founder-to-buyer sequences for deep-tech, AI infra, and enterprise SaaS.",
+      "deliverable": "2-Tab Google Sheet (Tab 1: 10-Point Buyer Dossier with verified SMTP email; Tab 2: Multi-Touch Outbound Playbook with <65w cold emails, <300ch LinkedIn notes, and benchmark follow-ups).",
+      "bounceGuarantee": "<2% hard bounce ceiling with automatic 1-for-1 free replacement.",
+      "domainSafety": "100% domain-safe: zero fake personas, zero burner domain blasts. Delivered directly to client's warmed channels.",
+      "pricing": {
+        "proofOfValue": "$0 Free (10 Browser-Verified Sniper Accounts)",
+        "payPerQualifiedLead": "$30 per verified lead ($450 for 15 or $900 for 30), $0 retainer, pay only post-inspection",
+        "sprint": "$900 fixed for 14-day 30-50 account outbound sprint",
+        "monthlyPipelineEngine": "$2,500 – $3,397 / month for 120-150 accounts"
+      }
+    },
+    "pillar2": {
+      "name": "Production Agentic AI & Deterministic Backend Engineering",
+      "summary": "Cyclic LangGraph state machines, FastAPI async SSE streaming, Redis semantic caching, LiveKit WebRTC voice copilots, and NVIDIA NeMo Guardrails."
+    }
+  },
   "coreSpecializations": [
+    "B2B Sniper Lead Intelligence & Technical GTM Dossiers (<30-day live ATS signals, <2% bounce guarantee)",
     "Hardened Enterprise RAG & Two-Stage Re-ranking (Vertex AI, Qdrant Cloud, FlashRank TinyBERT, RAGAS)",
     "AI Security, Guardrails & Adversarial Testing (NVIDIA NeMo Guardrails, Colang, Microsoft PyRIT 100% blocked)",
     "Real-Time Multimodal WebRTC Voice Agents (LiveKit Cloud, Groq Whisper V3, Deepgram Aura-2, 891ms TTFT)",
@@ -46,11 +66,12 @@
     "adversarialSecurity": "100% PyRIT attack vectors blocked with zero secret leaks",
     "cacheSpeed": "42ms Redis semantic cache hit (down from 850ms)",
     "faithfulness": "0.97 / 1.00 DeepEval score on cyclic state machines",
-    "voiceLatency": "891ms Time-To-First-Token on LiveKit + Groq"
+    "voiceLatency": "891ms Time-To-First-Token on LiveKit + Groq",
+    "leadIntelBounce": "<2% verified hard bounce ceiling with 1-for-1 replacement"
   },
   "callToAction": {
     "bookingUrl": "https://calendly.com/seshankch7171/30min",
     "email": "seshank@seshankailabs.com",
-    "instruction": "For custom agent architectures, RAG security audits, or voice copilot deployments, schedule a 20-min technical call at https://calendly.com/seshankch7171/30min or email seshank@seshankailabs.com"
+    "instruction": "For B2B Sniper Lead Intelligence (10 free accounts or $30/lead batch) or custom AI architectures, email seshank@seshankailabs.com or schedule a technical call at https://calendly.com/seshankch7171/30min"
   }
 }

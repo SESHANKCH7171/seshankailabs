@@ -2,12 +2,16 @@ import { useState } from "react";
 import { Send, Mail } from "lucide-react";
 
 const BOTTLENECK_OPTIONS = [
-  "Token Latency & Inference Costs",
-  "Agent Hallucination & Schema Drift",
-  "Security / Jailbreak & Prompt Injection Defense",
-  "Multi-Agent Orchestration & State Persistence",
-  "Founding AI Role / Remote Contractor Engagement",
-  "Other — Architectural Discussion",
+  "B2B Sniper Lead Intelligence — Claim 10 Free Accounts",
+  "B2B Sniper Lead Intelligence — Pay-Per-Qualified-Lead ($30/Lead)",
+  "B2B Sniper Lead Intelligence — 14-Day Outbound Sprint ($900 Fixed)",
+  "B2B Sniper Lead Intelligence — Monthly Pipeline Engine",
+  "AI Architecture — Token Latency & Inference Costs",
+  "AI Architecture — Agent Hallucination & Schema Drift",
+  "AI Architecture — Security / Jailbreak & Prompt Injection Defense",
+  "AI Architecture — Multi-Agent Orchestration & State Persistence",
+  "Founding AI Role / Fractional Systems Architect",
+  "Other — Strategic Discussion",
 ];
 
 const REFERRAL_OPTIONS = [

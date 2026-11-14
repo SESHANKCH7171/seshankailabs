@@ -1,5 +1,6 @@
 import { MotionAirframe } from "../components/MotionAirframe.jsx";
 import Home from "../components/sections/Home.jsx";
+import LeadIntelligence from "../components/sections/LeadIntelligence.jsx";
 import About from "../components/sections/About.jsx";
 import ValueStack from "../components/sections/ValueStack.jsx";
 import CaseStudies from "../components/sections/CaseStudies.jsx";
@@ -11,6 +12,7 @@ export default function HomePage() {
       <MotionAirframe />
       <div className="relative z-10">
         <Home />
+        <LeadIntelligence />
         <About />
         <ValueStack />
         <CaseStudies />

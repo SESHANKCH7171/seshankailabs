@@ -7,25 +7,31 @@ export default function About() {
       {/* Left column — text */}
       <div>
         <p className="font-mono text-xs uppercase tracking-tactical text-tactical-red">
-          THE ARCHITECTURAL MOAT
+          THE ARCHITECTURAL MOAT &amp; FOUNDER AUTHORITY
         </p>
         <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-tight text-white sm:text-5xl">
-          In production AI, models are commodities. Backend architecture is the moat.
+          In production AI &amp; deep-tech GTM, execution precision is the moat.
         </h2>
 
         <div className="mt-8 max-w-2xl space-y-6 text-base leading-8 text-industrial-silver">
           <p>
-            Most teams hit a wall when transitioning generative AI from demo to
-            production: prompt injections, unbounded latency, soaring inference costs,
-            and catastrophic schema drift. A frontend prompt wrapper cannot survive
-            enterprise concurrency.
+            Whether scaling go-to-market pipelines or shipping production AI, high-tech startups
+            face the same critical failure mode: superficial wrappers. Static lead scrapers burn target
+            accounts with generic AI spam, while naive prompt wrappers collapse under enterprise latency and schema drift.
           </p>
           <p>
-            Seshank AI Labs builds deterministic, high-throughput agentic infrastructure.
-            We combine cyclic state machines (LangGraph), asynchronous streaming microservices
-            (FastAPI), low-latency semantic caching (Redis), and enterprise guardrails
-            (NeMo &amp; DeepEval) to build AI systems that never fail silently.
+            Seshank AI Labs operates at the intersection of two synergistic engineering pillars:
           </p>
+          <ul className="space-y-3 font-mono text-xs leading-relaxed text-industrial-silver border-l-2 border-tactical-red/60 pl-4 py-1">
+            <li>
+              <span className="text-white font-semibold">01. B2B Sniper Lead Intelligence:</span> Browser-verified
+              buyer dossiers backed by live &lt;30-day ATS signals, tool gap audits, and &lt;65-word peer-to-peer sequences with a &lt;2% bounce guarantee.
+            </li>
+            <li>
+              <span className="text-white font-semibold">02. Production Agentic AI Backends:</span> Deterministic
+              cyclic state machines (LangGraph), asynchronous streaming microservices (FastAPI), Redis semantic caching, and NeMo Guardrails that never fail silently.
+            </li>
+          </ul>
         </div>
 
         {/* Credential panel */}
@@ -45,24 +51,26 @@ export default function About() {
             </div>
             <div className="flex gap-4">
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
-                Role Focus
+                Dual Focus
               </span>
-              <span className="text-white">AI Agent Systems Architect</span>
+              <span className="text-white">
+                B2B Lead Intelligence &amp; AI Systems
+              </span>
             </div>
             <div className="flex gap-4">
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
-                Core Stack
+                Tech Stack
               </span>
               <span className="text-tactical-red">
-                LangGraph · FastAPI · Redis · NeMo · DeepEval
+                LangGraph · FastAPI · Redis · NeMo · LiveKit
               </span>
             </div>
             <div className="flex gap-4">
               <span className="w-28 shrink-0 uppercase tracking-tactical text-industrial-ash">
-                Status
+                GTM Moat
               </span>
               <span className="text-ember-glow">
-                Open to Founding Roles &amp; Contracts (UAE / KSA / UK)
+                &lt;2% Bounce Guarantee · &lt;30-Day Signals
               </span>
             </div>
           </div>
