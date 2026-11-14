@@ -198,7 +198,7 @@ export default function SniperDossierModal({ isOpen, onClose, initialTier = "Fre
                   className={inputClass}
                   value={formData.company}
                   onChange={handleChange("company")}
-                  placeholder="e.g. Acme AI (acme.ai)"
+                  placeholder="e.g. Seshank AI Labs (seshankailabs.com)"
                 />
               </label>
 
