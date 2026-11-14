@@ -2,7 +2,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative mx-auto grid min-h-screen max-w-6xl content-center gap-12 px-5 py-28 sm:px-8 lg:grid-cols-[1fr_minmax(320px,0.6fr)] lg:gap-20 lg:px-10"
+      className="relative z-10 mx-auto grid min-h-screen max-w-6xl content-center gap-12 px-5 py-28 sm:px-8 lg:grid-cols-[1fr_minmax(320px,0.6fr)] lg:gap-20 lg:px-10 scroll-mt-28"
     >
       {/* Left column — text */}
       <div>

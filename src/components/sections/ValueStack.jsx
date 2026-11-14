@@ -6,7 +6,7 @@ export default function ValueStack() {
   return (
     <section
       id="capabilities"
-      className="relative mx-auto max-w-6xl px-5 py-28 sm:px-8 lg:px-10"
+      className="relative z-10 mx-auto max-w-6xl px-5 py-28 sm:px-8 lg:px-10 scroll-mt-28"
     >
       {/* Section header */}
       <p className="font-mono text-xs uppercase tracking-tactical text-tactical-red">

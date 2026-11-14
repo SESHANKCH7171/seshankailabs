@@ -16,9 +16,7 @@ import {
   Check,
   Zap,
   Clock,
-  Layers,
   Database,
-  Search,
 } from "lucide-react";
 import {
   comparisonMatrix,
@@ -27,6 +25,7 @@ import {
   pricingTiers,
   leadIntelFaqs,
 } from "../../data/outbound.js";
+import { openSniperModal } from "../SniperDossierModal.jsx";
 
 export default function LeadIntelligence() {
   const [activeTab, setActiveTab] = useState("tab1");
@@ -42,7 +41,7 @@ export default function LeadIntelligence() {
   return (
     <section
       id="lead-intelligence"
-      className="relative mx-auto max-w-6xl px-5 py-28 sm:px-8 lg:px-10"
+      className="relative z-10 mx-auto max-w-6xl px-5 py-28 sm:px-8 lg:px-10 scroll-mt-28"
     >
       {/* =========================================================================
           SECTION A: HERO & VALUE PROPOSITION
@@ -109,16 +108,23 @@ export default function LeadIntelligence() {
         </div>
 
         {/* Action Button & Subtext */}
-        <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-          <a
-            href="mailto:seshank@seshankailabs.com?subject=10%20free%20sniper%20accounts%20for%20our%20team"
+        <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <button
+            type="button"
+            onClick={() => openSniperModal("Free 10-Account Sniper Dossier ($0)")}
             className="focus-ring inline-flex items-center gap-3 border border-tactical-red bg-tactical-red px-6 py-4 font-mono text-sm uppercase tracking-tactical text-stealth-black shadow-tactical transition-all duration-300 hover:bg-transparent hover:text-tactical-red hover:shadow-ember"
           >
             Get 10 Verified Sniper Accounts Free
             <ArrowUpRight size={18} />
+          </button>
+          <a
+            href="#contact"
+            className="font-mono text-xs text-industrial-ash underline-offset-4 hover:text-tactical-red transition-colors"
+          >
+            Or fill contact uplink &darr;
           </a>
-          <span className="font-mono text-xs text-industrial-ash">
-            Zero upfront fees. Zero fake sender personas. Zero risk to your primary domain.
+          <span className="font-mono text-xs text-industrial-ash hidden md:inline">
+            · Zero upfront fees. 100% domain-safe.
           </span>
         </div>
       </div>
@@ -689,8 +695,9 @@ export default function LeadIntelligence() {
                   {tier.bestFor}
                 </p>
 
-                <a
-                  href={tier.href}
+                <button
+                  type="button"
+                  onClick={() => openSniperModal(`${tier.modelName} (${tier.price})`)}
                   className={`focus-ring flex items-center justify-center gap-2 w-full py-3.5 px-4 font-mono text-xs uppercase tracking-tactical transition-all duration-300 ${
                     tier.isPopular
                       ? "border border-tactical-red bg-tactical-red text-stealth-black font-bold hover:bg-transparent hover:text-tactical-red shadow-tactical"
@@ -699,7 +706,7 @@ export default function LeadIntelligence() {
                 >
                   {tier.cta}
                   <ArrowUpRight size={14} />
-                </a>
+                </button>
               </div>
             </div>
           ))}
@@ -775,12 +782,19 @@ export default function LeadIntelligence() {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
-              <a
-                href="mailto:seshank@seshankailabs.com?subject=Free%2010-Lead%20Sniper%20Dossier%20Request"
+              <button
+                type="button"
+                onClick={() => openSniperModal("Free 10-Account Sniper Dossier ($0)")}
                 className="focus-ring inline-flex items-center justify-center gap-2 border border-tactical-red bg-tactical-red px-6 py-3.5 font-mono text-xs uppercase tracking-tactical text-stealth-black font-bold shadow-tactical hover:bg-transparent hover:text-tactical-red transition-all"
               >
-                <Mail size={14} />
-                Email: seshank@seshankailabs.com
+                Claim 10 Free Accounts Now
+                <ArrowUpRight size={14} />
+              </button>
+              <a
+                href="#contact"
+                className="focus-ring inline-flex items-center justify-center gap-2 border border-industrial-line bg-industrial-panel px-6 py-3.5 font-mono text-xs uppercase tracking-tactical text-white hover:border-tactical-red hover:text-tactical-red transition-all"
+              >
+                Scroll to Contact Form &darr;
               </a>
               <a
                 href="https://linkedin.com/in/seshankch"
@@ -799,4 +813,3 @@ export default function LeadIntelligence() {
     </section>
   );
 }
-

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Crosshair, ShieldCheck, Mail, Linkedin } from "lucide-react";
 import LeadIntelligence from "../components/sections/LeadIntelligence.jsx";
 import Contact from "../components/sections/Contact.jsx";
+import { openSniperModal } from "../components/SniperDossierModal.jsx";
 
 export default function OutboundPage() {
   useEffect(() => {
@@ -28,12 +29,13 @@ export default function OutboundPage() {
             </span>
           </div>
 
-          <a
-            href="mailto:seshank@seshankailabs.com?subject=10%20free%20sniper%20accounts%20for%20our%20team"
+          <button
+            type="button"
+            onClick={() => openSniperModal("Free 10-Account Sniper Dossier ($0)")}
             className="hidden sm:inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-tactical text-white hover:text-tactical-red transition-colors"
           >
             Claim 10 Free Accounts &rarr;
-          </a>
+          </button>
         </div>
       </div>
 

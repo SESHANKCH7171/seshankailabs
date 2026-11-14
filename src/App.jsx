@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
@@ -8,6 +8,7 @@ import ArchitectureDetailPage from "./pages/ArchitectureDetailPage.jsx";
 import BlogIndexPage from "./pages/BlogIndexPage.jsx";
 import BlogPostPage from "./pages/BlogPostPage.jsx";
 import OutboundPage from "./pages/OutboundPage.jsx";
+import SniperDossierModal from "./components/SniperDossierModal.jsx";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -28,6 +29,21 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTier, setModalTier] = useState("Free 10-Account Sniper Dossier ($0)");
+
+  useEffect(() => {
+    const handleOpenModal = (e) => {
+      if (e.detail?.tier) {
+        setModalTier(e.detail.tier);
+      }
+      setModalOpen(true);
+    };
+
+    window.addEventListener("open-sniper-dossier-modal", handleOpenModal);
+    return () => window.removeEventListener("open-sniper-dossier-modal", handleOpenModal);
+  }, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -69,6 +85,13 @@ export default function App() {
             </a>
           </div>
         </footer>
+
+        {/* Global Formspree Sniper Dossier Requisition Modal */}
+        <SniperDossierModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          initialTier={modalTier}
+        />
       </main>
     </BrowserRouter>
   );

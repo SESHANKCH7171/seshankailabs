@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, ArrowDown, ShieldCheck, Crosshair, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
+import { openSniperModal } from "../SniperDossierModal.jsx";
 
 export default function Home() {
   const sectionRef = useRef(null);
@@ -29,7 +30,7 @@ export default function Home() {
     <section
       id="home"
       ref={sectionRef}
-      className="relative mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-5 py-32 sm:px-8 lg:px-10"
+      className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-5 py-32 sm:px-8 lg:px-10 scroll-mt-28"
     >
       {/* Eyebrow */}
       <div data-hero-animate className="flex flex-wrap items-center gap-3">
@@ -92,15 +93,16 @@ export default function Home() {
 
       {/* CTAs */}
       <div data-hero-animate className="mt-10 flex flex-wrap items-center gap-4 sm:gap-6">
-        <a
-          href="mailto:seshank@seshankailabs.com?subject=10%20free%20sniper%20accounts%20for%20our%20team"
+        <button
+          type="button"
+          onClick={() => openSniperModal("Free 10-Account Sniper Dossier ($0)")}
           id="cta-sniper-dossier"
           className="focus-ring inline-flex items-center gap-3 border border-tactical-red bg-tactical-red px-6 py-4 font-mono text-sm uppercase tracking-tactical text-stealth-black shadow-tactical transition-all duration-300 hover:bg-transparent hover:text-tactical-red hover:shadow-ember"
           aria-label="Request your free 10-lead sniper dossier"
         >
           Request Your Free 10-Lead Sniper Dossier
           <ArrowUpRight size={18} />
-        </a>
+        </button>
         <a
           href="#capabilities"
           id="cta-explore-arch"
