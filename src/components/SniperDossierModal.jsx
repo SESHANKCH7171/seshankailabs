@@ -215,11 +215,8 @@ export default function SniperDossierModal({ isOpen, onClose, initialTier = "Fre
                   <option value="Free 10-Account Sniper Dossier ($0)">
                     Free Proof-of-Value Sample (10 Verified Accounts · $0)
                   </option>
-                  <option value="Pay-Per-Qualified-Lead ($30/Lead - 15 Accounts: $450)">
-                    Performance Batch — 15 Accounts ($450 · Pay Post-Inspection)
-                  </option>
-                  <option value="Pay-Per-Qualified-Lead ($30/Lead - 30 Accounts: $900)">
-                    Performance Batch — 30 Accounts ($900 · Pay Post-Inspection)
+                  <option value="Pay-Per-Qualified-Lead ($30 / Verified Lead)">
+                    Pay-Per-Qualified-Lead ($30 / Verified Lead · Pay Post-Inspection)
                   </option>
                   <option value="14-Day Outbound Pipeline Sprint ($900 Fixed)">
                     14-Day Outbound Pipeline Sprint ($900 Fixed · 30–50 Accounts)
